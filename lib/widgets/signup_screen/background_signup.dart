@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/color.dart';
 
-class BackgroundLogin extends StatelessWidget {
-  const BackgroundLogin({super.key});
+class BackgroundSingUp extends StatelessWidget {
+  const BackgroundSingUp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +12,7 @@ class BackgroundLogin extends StatelessWidget {
     var width = size.width;
     return Stack(children: [
       Container(
-        color: mainColor,
+        color: whiteColor,
       ),
       Positioned(
         left: width * 0.5,
