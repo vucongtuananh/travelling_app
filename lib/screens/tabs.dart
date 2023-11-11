@@ -24,29 +24,73 @@ class _TabsScreenState extends State<TabsScreen> {
     });
   }
 
+  Widget iconButtonBottom(int currentIndex, String icon) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 18),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset("$imagePathLdpi/$icon", color: _currentIndex == currentIndex ? mainColor : grayColor),
+          const SizedBox(
+            height: 5,
+          ),
+          _currentIndex == currentIndex ? Image.asset("$imagePathLdpi/point_blue.png") : const SizedBox()
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<String> keys = _pages.keys.toList();
     return Scaffold(
-      body: _pages[keys[_currentIndex]],
-      bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: mainColor,
-          unselectedItemColor: grayColor,
-          currentIndex: _currentIndex,
-          onTap: _chooseScreen,
-          items: [
-            BottomNavigationBarItem(
-                icon: Image.asset(
-                  "$imagePathLdpi/home.png",
-                  color: grayColor,
-                ),
-                label: "."),
-            BottomNavigationBarItem(icon: Image.asset("$imagePathLdpi/home.png", color: grayColor), label: "."),
-            BottomNavigationBarItem(icon: Image.asset("$imagePathLdpi/home.png", color: grayColor), label: "."),
-            BottomNavigationBarItem(icon: Image.asset("$imagePathLdpi/home.png", color: grayColor), label: "."),
-            BottomNavigationBarItem(icon: Image.asset("$imagePathLdpi/home.png", color: grayColor), label: "."),
-          ]),
-    );
+        body: _pages[_currentIndex],
+        bottomNavigationBar: Container(
+          height: 60,
+          decoration: const BoxDecoration(
+            border: Border(top: BorderSide(color: grayColor, width: 0.5)),
+          ),
+          child: Row(
+            // crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _currentIndex = 0;
+                    });
+                  },
+                  icon: iconButtonBottom(0, "home.png")),
+              IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _currentIndex = 1;
+                    });
+                  },
+                  icon: iconButtonBottom(1, "max_location.png")),
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    _currentIndex = 2;
+                  });
+                },
+                icon: iconButtonBottom(2, "message.png"),
+              ),
+              IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _currentIndex = 3;
+                    });
+                  },
+                  icon: iconButtonBottom(3, "love.png")),
+              IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _currentIndex = 4;
+                    });
+                  },
+                  icon: iconButtonBottom(4, "profile.png")),
+            ],
+          ),
+        ));
   }
 }
