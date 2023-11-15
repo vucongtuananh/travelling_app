@@ -13,7 +13,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(children: [BackgroundSingUp(), Positioned(left: 24, right: 24, top: MediaQuery.of(context).padding.top, child: ContentBoxSignUp())]),
+      body: Stack(children: [const BackgroundSingUp(), Positioned(left: 24, right: 24, top: MediaQuery.of(context).padding.top, child: const ContentBoxSignUp())]),
     );
   }
 }

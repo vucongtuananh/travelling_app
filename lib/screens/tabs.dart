@@ -18,15 +18,9 @@ class _TabsScreenState extends State<TabsScreen> {
   int _currentIndex = 0;
   final List<Widget> _pages = [const HomeScreen(), const ExploreScreen(), const MessageScreen(), const FavoriteScreen(), const OwnDetailScreen()];
 
-  void _chooseScreen(int value) {
-    setState(() {
-      _currentIndex = value;
-    });
-  }
-
   Widget iconButtonBottom(int currentIndex, String icon) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 18),
+      padding: const EdgeInsets.symmetric(horizontal: 18),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
