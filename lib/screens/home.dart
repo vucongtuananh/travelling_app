@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:travelling_app/bloc/top_trips/top_trip_bloc.dart';
+import 'package:travelling_app/bloc/top_trip_bloc.dart';
 import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/color.dart';
 import 'package:travelling_app/widgets/home_screen/group_trips.dart';
 import 'package:travelling_app/widgets/home_screen/top_trips.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -270,7 +269,7 @@ class _HomeScreenState extends State<HomeScreen> {
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
-              return BlocProvider(create: (context) => IsFavorite(), child: TopTrip(trip: listTrips[index]));
+              return TopTrip(trip: listTrips[index]);
             },
             itemCount: listTrips.length,
           ),

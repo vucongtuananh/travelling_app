@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/color.dart';
+import 'package:travelling_app/screens/signup.dart';
+import 'package:travelling_app/screens/tabs.dart';
 
 class ContentBoxLogin extends StatefulWidget {
   const ContentBoxLogin({super.key});
@@ -78,17 +80,26 @@ class _ContentBoxLoginState extends State<ContentBoxLogin> {
       ],
     ));
 
-    Widget signInBtn = Container(
-      padding: const EdgeInsets.symmetric(vertical: 13),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
-        color: mainColor,
-      ),
-      alignment: Alignment.center,
-      child: Text(
-        "Sign in",
-        style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15, fontWeight: FontWeight.w700, color: const Color(0xffffffff)),
+    Widget signInBtn = GestureDetector(
+      onTap: () {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TabsScreen(),
+            ));
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 13),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          color: mainColor,
+        ),
+        alignment: Alignment.center,
+        child: Text(
+          "Sign in",
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15, fontWeight: FontWeight.w700, color: const Color(0xffffffff)),
+        ),
       ),
     );
 
@@ -127,7 +138,13 @@ class _ContentBoxLoginState extends State<ContentBoxLogin> {
             "Forgot Password?",
             style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 10, fontWeight: FontWeight.w700, color: Color(0xff636363)),
           ),
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SignUpScreen(),
+                ));
+          },
         )
       ],
     );
