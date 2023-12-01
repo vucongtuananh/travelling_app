@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:travelling_app/bloc/favorite_bloc.dart';
 import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/color.dart';
-import 'package:travelling_app/screens/trip_details.dart';
+import 'package:travelling_app/modules/trip_details.dart';
 
 import '../../models/trip.dart';
 

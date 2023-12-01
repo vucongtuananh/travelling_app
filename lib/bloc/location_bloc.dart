@@ -1,3 +1,4 @@
+import 'package:travelling_app/bloc/tour_guide_bloc.dart';
 import 'package:travelling_app/models/location.dart';
 
 List<Location> listLocation = [
@@ -9,7 +10,9 @@ List<Location> listLocation = [
       imageDetail: 'location_3.png',
       describe:
           "One of EATER National and Atlanta Magazine’s most anticipated new openings of 2013.This new restaurant by Ford Fry and Rocket Farm, designed by MeyerDavisand NO Architecture, is located at the corner of West Paces Ferry,",
-      titleDetail: "King + Duke"),
+      titleDetail: "King + Duke",
+      rate: 4.5,
+      tourGuide: listTourGuide[0]),
   Location(
       title: "Hanoi, VietNam",
       distance: 105.6,
@@ -18,7 +21,9 @@ List<Location> listLocation = [
       imageDetail: 'location_3.png',
       describe:
           "One of EATER National and Atlanta Magazine’s most anticipated new openings of 2013.This new restaurant by Ford Fry and Rocket Farm, designed by MeyerDavisand NO Architecture, is located at the corner of West Paces Ferry,",
-      titleDetail: 'King + Duke'),
+      titleDetail: 'King + Duke',
+      rate: 4.5,
+      tourGuide: listTourGuide[0]),
   Location(
       title: "BangKok, ThaiLand",
       distance: 125,
@@ -27,5 +32,7 @@ List<Location> listLocation = [
       imageDetail: 'location_3.png',
       describe:
           "One of EATER National and Atlanta Magazine’s most anticipated new openings of 2013.This new restaurant by Ford Fry and Rocket Farm, designed by MeyerDavisand NO Architecture, is located at the corner of West Paces Ferry,",
-      titleDetail: 'King + Duke'),
+      titleDetail: 'King + Duke',
+      rate: 4.5,
+      tourGuide: listTourGuide[0]),
 ];

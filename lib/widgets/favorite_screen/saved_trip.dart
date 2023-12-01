@@ -4,7 +4,7 @@ import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/color.dart';
 import 'package:travelling_app/const/fonts.dart';
 import 'package:travelling_app/models/trip.dart';
-import 'package:travelling_app/screens/trip_details.dart';
+import 'package:travelling_app/modules/trip_details.dart';
 import 'package:travelling_app/widgets/container_button.dart';
 
 class SavedTrip extends StatelessWidget {
@@ -24,7 +24,8 @@ class SavedTrip extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.only(top: 5, left: 5, bottom: 7, right: 16),
         margin: const EdgeInsets.only(bottom: 10),
-        decoration: BoxDecoration(color: whiteColor, borderRadius: BorderRadius.circular(20), boxShadow: [BoxShadow(color: grayBlurColor, offset: Offset(0, 0), blurRadius: 0.2)]),
+        decoration:
+            BoxDecoration(color: whiteColor, borderRadius: BorderRadius.circular(20), boxShadow: const [BoxShadow(color: grayBlurColor, offset: Offset(0, 0), blurRadius: 0.2)]),
         child: Row(
           children: [
             Container(

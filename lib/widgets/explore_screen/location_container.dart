@@ -18,6 +18,7 @@ class LocationContainer extends StatelessWidget {
           height: MediaQuery.of(context).size.height,
         ),
         Container(
+          padding: const EdgeInsets.only(left: 20, right: 20),
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height / 2,
           decoration: BoxDecoration(

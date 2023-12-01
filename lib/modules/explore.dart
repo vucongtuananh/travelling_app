@@ -4,7 +4,7 @@ import 'package:travelling_app/bloc/location_bloc.dart';
 import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/color.dart';
 import 'package:travelling_app/const/fonts.dart';
-import 'package:travelling_app/screens/explore_details.dart';
+import 'package:travelling_app/modules/explore_details.dart';
 import 'package:travelling_app/widgets/explore_screen/location_container.dart';
 
 class ExploreScreen extends StatefulWidget {
