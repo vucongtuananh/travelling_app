@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:travelling_app/bloc/user_bloc.dart';
 import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/color.dart';
 import 'package:travelling_app/const/fonts.dart';
@@ -54,20 +53,20 @@ class GroupTripCard extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              Row(
-                children: [
-                  listUser(listUsers, context),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                    "110+ Orders",
-                    style: blackTextW4Style.copyWith(
-                      fontSize: 4,
-                    ),
-                  )
-                ],
-              ),
+              // Row(
+              //   children: [
+              //     listUser(listUsers, context),
+              //     const SizedBox(
+              //       width: 5,
+              //     ),
+              //     Text(
+              //       "110+ Orders",
+              //       style: blackTextW4Style.copyWith(
+              //         fontSize: 4,
+              //       ),
+              //     )
+              //   ],
+              // ),
               const SizedBox(
                 height: 10,
               ),

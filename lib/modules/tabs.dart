@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/color.dart';
-import 'package:travelling_app/screens/explore.dart';
-import 'package:travelling_app/screens/favorite.dart';
-import 'package:travelling_app/screens/home.dart';
-import 'package:travelling_app/screens/message.dart';
-import 'package:travelling_app/screens/own.dart';
+import 'package:travelling_app/modules/explore.dart';
+import 'package:travelling_app/modules/favorite.dart';
+import 'package:travelling_app/modules/home.dart';
+import 'package:travelling_app/modules/message.dart';
+import 'package:travelling_app/modules/own.dart';
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({super.key});
@@ -24,11 +25,16 @@ class _TabsScreenState extends State<TabsScreen> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Image.asset("$imagePathLdpi/$icon", color: _currentIndex == currentIndex ? mainColor : grayColor),
+          SvgPicture.asset(
+            "$imagePathLdpi/$icon",
+            color: _currentIndex == currentIndex ? mainColor : grayColor,
+            width: 22,
+            height: 22,
+          ),
           const SizedBox(
             height: 5,
           ),
-          _currentIndex == currentIndex ? Image.asset("$imagePathLdpi/point_blue.png") : const SizedBox()
+          _currentIndex == currentIndex ? SvgPicture.asset("$imagePathLdpi/dot_icon.svg") : const SizedBox()
         ],
       ),
     );
@@ -53,21 +59,21 @@ class _TabsScreenState extends State<TabsScreen> {
                       _currentIndex = 0;
                     });
                   },
-                  icon: iconButtonBottom(0, "home.png")),
+                  icon: iconButtonBottom(0, "home_icon.svg")),
               IconButton(
                   onPressed: () {
                     setState(() {
                       _currentIndex = 1;
                     });
                   },
-                  icon: iconButtonBottom(1, "max_location.png")),
+                  icon: iconButtonBottom(1, "location_icon_tab.svg")),
               IconButton(
                 onPressed: () {
                   setState(() {
                     _currentIndex = 2;
                   });
                 },
-                icon: iconButtonBottom(2, "message.png"),
+                icon: iconButtonBottom(2, "message_icon.svg"),
               ),
               IconButton(
                   onPressed: () {
@@ -75,14 +81,14 @@ class _TabsScreenState extends State<TabsScreen> {
                       _currentIndex = 3;
                     });
                   },
-                  icon: iconButtonBottom(3, "love.png")),
+                  icon: iconButtonBottom(3, "heart_icon_tab.svg")),
               IconButton(
                   onPressed: () {
                     setState(() {
                       _currentIndex = 4;
                     });
                   },
-                  icon: iconButtonBottom(4, "profile.png")),
+                  icon: iconButtonBottom(4, "profile_icon.svg")),
             ],
           ),
         ));

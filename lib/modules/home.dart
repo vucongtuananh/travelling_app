@@ -22,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Padding(
         padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 20, left: 20, right: 20),
         child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
               header(),
@@ -36,36 +37,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget topBar() => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Location",
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: grayColor, fontSize: 16, fontWeight: FontWeight.w400),
-              ),
-              GestureDetector(
-                child: Row(
-                  children: [
-                    SvgPicture.asset("$imagePathLdpi/location_icon.svg"),
-                    const SizedBox(
-                      width: 2,
-                    ),
-                    Text(
-                      "New York, USA",
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: blackColor, fontSize: 16, fontWeight: FontWeight.w600),
-                    ),
-                    SvgPicture.asset("$imagePathLdpi/drop_arrow.svg"),
-                  ],
-                ),
-              )
-            ],
-          ),
-          SvgPicture.asset('$imagePathLdpi/notify_icon.svg')
-        ],
-      );
   Widget searchBar() => Row(
         children: [
           Expanded(
@@ -103,11 +74,74 @@ class _HomeScreenState extends State<HomeScreen> {
       );
   Widget header() => Column(
         children: [
-          topBar(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Location",
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: grayColor, fontSize: 16, fontWeight: FontWeight.w400),
+                  ),
+                  GestureDetector(
+                    child: Row(
+                      children: [
+                        SvgPicture.asset("$imagePathLdpi/location_icon.svg"),
+                        const SizedBox(
+                          width: 2,
+                        ),
+                        Text(
+                          "New York, USA",
+                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: blackColor, fontSize: 16, fontWeight: FontWeight.w600),
+                        ),
+                        SvgPicture.asset("$imagePathLdpi/drop_arrow.svg"),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              SvgPicture.asset('$imagePathLdpi/notify_icon.svg')
+            ],
+          ),
           const SizedBox(
             height: 20,
           ),
-          searchBar(),
+          Row(
+            children: [
+              Expanded(
+                // flex: 5,
+                child: Container(
+                  height: 45,
+                  decoration: BoxDecoration(color: whiteColor, border: Border.all(color: const Color(0xffE9E9E9)), borderRadius: BorderRadius.circular(20)),
+                  child: Row(children: [
+                    const SizedBox(
+                      width: 15,
+                    ),
+                    SvgPicture.asset("$imagePathLdpi/search_icon.svg"),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    const Expanded(
+                      child: TextField(
+                        decoration: InputDecoration(border: InputBorder.none, hintText: "Search"),
+                      ),
+                    )
+                  ]),
+                ),
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Container(
+                height: 45,
+                width: 45,
+                // padding: const EdgeInsets.all(30),
+                decoration: BoxDecoration(color: mainColor, borderRadius: BorderRadius.circular(10)),
+                child: Image.asset("$imagePathLdpi/setting.png"),
+              )
+            ],
+          ),
         ],
       );
   Widget body() {
@@ -162,7 +196,20 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget categoryMenu() {
     return Column(
       children: [
-        titleText("Categories"),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "Categories",
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(color: blackColor, fontSize: 16, fontWeight: FontWeight.w700),
+            ),
+            Text(
+              "See All",
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: const Color(0xffA2A2A2), fontSize: 14, fontWeight: FontWeight.w400),
+            )
+          ],
+        ),
         const SizedBox(
           height: 20,
         ),
@@ -238,28 +285,24 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Row titleText(String title) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
-          title,
-          style: Theme.of(context).textTheme.titleLarge!.copyWith(color: blackColor, fontSize: 16, fontWeight: FontWeight.w700),
-        ),
-        Text(
-          "See All",
-          style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: const Color(0xffA2A2A2), fontSize: 14, fontWeight: FontWeight.w400),
-        )
-      ],
-    );
-  }
-
   Widget topTrip() {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        titleText("Top Trips"),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "Top Trips",
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(color: blackColor, fontSize: 16, fontWeight: FontWeight.w700),
+            ),
+            Text(
+              "See All",
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: const Color(0xffA2A2A2), fontSize: 14, fontWeight: FontWeight.w400),
+            )
+          ],
+        ),
         const SizedBox(
           height: 25,
         ),
@@ -281,7 +324,20 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget groupTrip() {
     return Column(
       children: [
-        titleText("Group Trips"),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "Group Trips",
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(color: blackColor, fontSize: 16, fontWeight: FontWeight.w700),
+            ),
+            Text(
+              "See All",
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: const Color(0xffA2A2A2), fontSize: 14, fontWeight: FontWeight.w400),
+            )
+          ],
+        ),
         const SizedBox(
           height: 24,
         ),

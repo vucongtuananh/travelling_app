@@ -21,7 +21,7 @@ class BackgroundLogin extends StatelessWidget {
           "$imagePathLdpi/icon_earth.png",
           scale: 0.5,
           fit: BoxFit.none,
-          color: mainColor.withOpacity(0.2),
+          color: whiteColor.withOpacity(0.2),
         ),
       ),
       Positioned(
@@ -32,7 +32,7 @@ class BackgroundLogin extends StatelessWidget {
           "$imagePathLdpi/icon_earth.png",
           scale: 0.4,
           fit: BoxFit.none,
-          color: mainColor.withOpacity(0.2),
+          color: whiteColor.withOpacity(0.2),
         ),
       ),
     ]);

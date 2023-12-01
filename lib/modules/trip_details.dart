@@ -50,14 +50,14 @@ class TripDetails extends StatelessWidget {
                   children: [
                     Text(
                       trip.title,
-                      style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Color(0xff323232), fontSize: 20, fontWeight: FontWeight.w600),
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(color: const Color(0xff323232), fontSize: 20, fontWeight: FontWeight.w600),
                     ),
                     Row(
                       children: [
                         SvgPicture.asset("$imagePathLdpi/star_icon.svg"),
                         Text(
                           "${trip.rate}",
-                          style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Color(0xff636363), fontSize: 18, fontWeight: FontWeight.w400),
+                          style: Theme.of(context).textTheme.titleLarge!.copyWith(color: const Color(0xff636363), fontSize: 18, fontWeight: FontWeight.w400),
                         )
                       ],
                     )
