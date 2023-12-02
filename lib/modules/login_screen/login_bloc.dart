@@ -10,8 +10,10 @@ class LoginBLoc extends Bloc<LoginEvent, LoginState> {
     on<LoginTextChangeEvent>(
       (event, emit) {
         if (event.email.isEmpty) {
+          isValidEmail = false;
           emit(LoginErrorState(errorEmail: "khong bo trong emil", errorPassword: ""));
         } else if (!EmailValidator.validate(event.email)) {
+          isValidEmail = false;
           emit(LoginErrorState(errorEmail: "email khong dung dinh dang", errorPassword: ""));
         } else if (event.password.isEmpty) {
           emit(LoginErrorState(errorEmail: "", errorPassword: "khong bo trong pass"));

@@ -125,13 +125,13 @@ class GroupTripCard extends StatelessWidget {
               width: MediaQuery.of(context).size.width / 5.5,
               height: 15,
             ),
-            for (var e in users)
-              Positioned(
-                  left: e.id * 10,
-                  child: Image.asset(
-                    e.imgPath,
-                    scale: 3,
-                  ))
+            // for (var e in users)
+            //   Positioned(
+            //       left: e.id * 10,
+            //       child: Image.asset(
+            //         e.imgPath,
+            //         scale: 3,
+            //       ))
           ],
         ));
   }

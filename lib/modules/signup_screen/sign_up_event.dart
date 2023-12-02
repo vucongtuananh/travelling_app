@@ -1,19 +1,17 @@
 abstract class SignUpEvent {}
 
-class SignUpNameTextChangeEvent extends SignUpEvent {
-  final String userName;
-
-  SignUpNameTextChangeEvent({required this.userName});
-}
-
-class SignUpEmailTextChangeEvent extends SignUpEvent {
+class SignUpTextChangeEvent extends SignUpEvent {
+  final String name;
   final String email;
-
-  SignUpEmailTextChangeEvent({required this.email});
-}
-
-class SignUpPassTextChangeEvent extends SignUpEvent {
   final String pass;
 
-  SignUpPassTextChangeEvent({required this.pass});
+  SignUpTextChangeEvent({required this.email, required this.name, required this.pass});
+}
+
+class SignUpPostEvent extends SignUpEvent {
+  final String name;
+  final String email;
+  final String pass;
+
+  SignUpPostEvent({required this.email, required this.name, required this.pass});
 }

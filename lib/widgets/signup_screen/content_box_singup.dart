@@ -65,21 +65,28 @@ class _ContentBoxSignUpState extends State<ContentBoxSignUp> {
   }
 
   signUpBtn(BuildContext context) {
-    bool isValid = context.read<SignUpBloc>().isValid();
     return BlocBuilder<SignUpBloc, SignUpState>(
       builder: (context, state) {
         return GestureDetector(
-          onTap: () {},
-          child: isLoading
+          onTap: () {
+            BlocProvider.of<SignUpBloc>(context).add(SignUpPostEvent(email: _emailController.text, name: _nameController.text, pass: _passController.text));
+          },
+          child: state is SignUpLoadingState
               ? const Center(child: CircularProgressIndicator())
               : Container(
                   padding: const EdgeInsets.symmetric(vertical: 13),
                   width: double.infinity,
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(30), border: Border.all(color: mainColor), color: isValid ? null : mainColor),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(color: state is SignUpValidState || state is SignUpLoadedState ? whiteColor : mainColor),
+                      color: state is SignUpValidState || state is SignUpLoadedState ? mainColor : null),
                   alignment: Alignment.center,
                   child: Text(
                     "Create Account",
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15, fontWeight: FontWeight.w700, color: isValid ? mainColor : whiteColor),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium!
+                        .copyWith(fontSize: 15, fontWeight: FontWeight.w700, color: state is SignUpValidState || state is SignUpLoadedState ? whiteColor : mainColor),
                   ),
                 ),
         );
@@ -88,14 +95,13 @@ class _ContentBoxSignUpState extends State<ContentBoxSignUp> {
   }
 
   formSignUp(BuildContext context) {
-    var _bloc = context.read<SignUpBloc>();
     return Form(
       child: Column(
         children: [
           TextFormField(
             controller: _nameController,
             onChanged: (value) {
-              context.read<SignUpBloc>().add(SignUpNameTextChangeEvent(userName: _nameController.text));
+              context.read<SignUpBloc>().add(SignUpTextChangeEvent(email: _emailController.text, name: _nameController.text, pass: _nameController.text));
             },
             style: Theme.of(context).textTheme.bodySmall!.copyWith(
                   color: blackColor,
@@ -109,7 +115,7 @@ class _ContentBoxSignUpState extends State<ContentBoxSignUp> {
                 ),
                 suffixIcon: BlocBuilder<SignUpBloc, SignUpState>(
                   builder: (context, state) {
-                    if (state is SingUpValidNameState) {
+                    if (context.read<SignUpBloc>().isValidName) {
                       return Image.asset(
                         "$imagePathLdpi/check.png",
                         color: mainColor,
@@ -124,7 +130,7 @@ class _ContentBoxSignUpState extends State<ContentBoxSignUp> {
           ),
           BlocBuilder<SignUpBloc, SignUpState>(
             builder: (context, state) {
-              if (state is SignUpErrorUserNameState) {
+              if (state is SignUpErrorState) {
                 return Text(
                   state.errorName,
                   style: Theme.of(context).textTheme.bodySmall!.copyWith(
@@ -139,7 +145,7 @@ class _ContentBoxSignUpState extends State<ContentBoxSignUp> {
           TextFormField(
             controller: _emailController,
             onChanged: (value) {
-              context.read<SignUpBloc>().add(SignUpEmailTextChangeEvent(email: _emailController.text));
+              context.read<SignUpBloc>().add(SignUpTextChangeEvent(email: _emailController.text, name: _nameController.text, pass: _passController.text));
             },
             style: Theme.of(context).textTheme.bodySmall!.copyWith(
                   color: blackColor,
@@ -153,7 +159,7 @@ class _ContentBoxSignUpState extends State<ContentBoxSignUp> {
                 ),
                 suffixIcon: BlocBuilder<SignUpBloc, SignUpState>(
                   builder: (context, state) {
-                    if (state is SingUpValidEmailState) {
+                    if (context.read<SignUpBloc>().isValidEmail) {
                       return Image.asset(
                         "$imagePathLdpi/check.png",
                         color: mainColor,
@@ -168,7 +174,7 @@ class _ContentBoxSignUpState extends State<ContentBoxSignUp> {
           ),
           BlocBuilder<SignUpBloc, SignUpState>(
             builder: (context, state) {
-              if (state is SignUpErrorEmailState) {
+              if (state is SignUpErrorState) {
                 return Text(
                   state.errorEmail,
                   style: Theme.of(context).textTheme.bodySmall!.copyWith(
@@ -184,14 +190,14 @@ class _ContentBoxSignUpState extends State<ContentBoxSignUp> {
           ),
           TextFormField(
             controller: _passController,
-            onChanged: (value) {
-              context.read<SignUpBloc>().add(SignUpPassTextChangeEvent(pass: _passController.text));
-            },
             style: Theme.of(context).textTheme.bodySmall!.copyWith(
                   color: mainColor,
                   fontSize: 15,
                   fontWeight: FontWeight.w400,
                 ),
+            onChanged: (value) {
+              context.read<SignUpBloc>().add(SignUpTextChangeEvent(email: _emailController.text, name: _nameController.text, pass: _passController.text));
+            },
             obscureText: true,
             decoration: InputDecoration(
                 label: Text(
@@ -204,7 +210,7 @@ class _ContentBoxSignUpState extends State<ContentBoxSignUp> {
           ),
           BlocBuilder<SignUpBloc, SignUpState>(
             builder: (context, state) {
-              if (state is SignUpErrorPassState) {
+              if (state is SignUpErrorState) {
                 return Text(
                   state.errorPass,
                   style: Theme.of(context).textTheme.bodySmall!.copyWith(

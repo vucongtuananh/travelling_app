@@ -8,7 +8,9 @@ class SignUpErrorState extends SignUpState {
   SignUpErrorState({required this.errorEmail, required this.errorName, required this.errorPass});
 }
 
-class SingUpValidState extends SignUpState {}
+class SignUpValidState extends SignUpState {}
+
+class SignUpLoadedState extends SignUpState {}
 
 class SignUpInitialState extends SignUpState {}
 
