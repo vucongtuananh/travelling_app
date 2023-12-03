@@ -44,6 +44,7 @@ class _ContentBoxSignUpState extends State<ContentBoxSignUp> {
         const SizedBox(
           height: 20,
         ),
+
         Center(child: SizedBox(child: Image.asset("$imagePathLdpi/icon_earth.png"))),
         const SizedBox(
           height: 30,
@@ -67,26 +68,24 @@ class _ContentBoxSignUpState extends State<ContentBoxSignUp> {
   signUpBtn(BuildContext context) {
     return BlocBuilder<SignUpBloc, SignUpState>(
       builder: (context, state) {
+        bool isValid = state is SignUpValidState || state is SignUpLoadedState;
         return GestureDetector(
           onTap: () {
-            BlocProvider.of<SignUpBloc>(context).add(SignUpPostEvent(email: _emailController.text, name: _nameController.text, pass: _passController.text));
+            isValid
+                ? BlocProvider.of<SignUpBloc>(context).add(SignUpPostEvent(context, email: _emailController.text, name: _nameController.text, pass: _passController.text))
+                : null;
           },
           child: state is SignUpLoadingState
               ? const Center(child: CircularProgressIndicator())
               : Container(
                   padding: const EdgeInsets.symmetric(vertical: 13),
                   width: double.infinity,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      border: Border.all(color: state is SignUpValidState || state is SignUpLoadedState ? whiteColor : mainColor),
-                      color: state is SignUpValidState || state is SignUpLoadedState ? mainColor : null),
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(30), border: Border.all(color: isValid ? whiteColor : mainColor), color: isValid ? mainColor : null),
                   alignment: Alignment.center,
                   child: Text(
                     "Create Account",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium!
-                        .copyWith(fontSize: 15, fontWeight: FontWeight.w700, color: state is SignUpValidState || state is SignUpLoadedState ? whiteColor : mainColor),
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15, fontWeight: FontWeight.w700, color: isValid ? whiteColor : mainColor),
                   ),
                 ),
         );

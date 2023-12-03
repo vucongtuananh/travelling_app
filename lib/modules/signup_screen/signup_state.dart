@@ -15,3 +15,9 @@ class SignUpLoadedState extends SignUpState {}
 class SignUpInitialState extends SignUpState {}
 
 class SignUpLoadingState extends SignUpState {}
+
+class SignUpNotifyState extends SignUpState {
+  final String notify;
+
+  SignUpNotifyState({required this.notify});
+}

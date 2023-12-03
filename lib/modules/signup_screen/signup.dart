@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:travelling_app/data/auth/fire_auth.dart';
 import 'package:travelling_app/modules/signup_screen/signup_cubit.dart';
-import 'package:travelling_app/repository/repository.dart';
 import 'package:travelling_app/widgets/signup_screen/background_signup.dart';
 import 'package:travelling_app/widgets/signup_screen/content_box_singup.dart';
 
@@ -22,7 +22,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           left: 24,
           right: 24,
           top: MediaQuery.of(context).padding.top,
-          child: BlocProvider(create: (context) => SignUpBloc(userRepository: UserRepository()), child: const ContentBoxSignUp()),
+          child: BlocProvider(create: (context) => SignUpBloc(auth: Auth()), child: const ContentBoxSignUp()),
         )
       ]),
     );

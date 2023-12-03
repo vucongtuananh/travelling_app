@@ -17,53 +17,59 @@ class TopTrip extends StatelessWidget {
   Widget build(BuildContext context) {
     var w = MediaQuery.of(context).size.width;
 
-    return GestureDetector(
-      child: Container(
-        width: w / 2.5,
-        padding: const EdgeInsets.only(top: 2, left: 2, right: 2, bottom: 9),
-        margin: const EdgeInsets.only(right: 13),
-        decoration: BoxDecoration(
-          color: whiteColor,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ClipRect(
-              child: Hero(
-                tag: trip.id,
-                child: Image.asset(
-                  "$imagePathHdpi/${trip.imgPath}",
-                  fit: BoxFit.fitHeight,
+    return BlocProvider(
+      create: (context) => IsFavorite(),
+      child: GestureDetector(
+        child: Container(
+          width: w / 2.5,
+          padding: const EdgeInsets.only(top: 2, left: 2, right: 2, bottom: 9),
+          margin: const EdgeInsets.only(right: 13),
+          decoration: BoxDecoration(
+            color: whiteColor,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ClipRect(
+                child: Hero(
+                  tag: trip.id,
+                  child: Image.asset(
+                    "$imagePathHdpi/${trip.imgPath}",
+                    fit: BoxFit.fitHeight,
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Column(
-                children: [
-                  firstLine(context),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  secondLine(context),
-                  const SizedBox(
-                    height: 18,
-                  ),
-                  thirdLine(context)
-                ],
-              ),
-            )
-          ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Column(
+                  children: [
+                    firstLine(context),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    secondLine(context),
+                    const SizedBox(
+                      height: 18,
+                    ),
+                    thirdLine(context)
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BlocProvider(
+                  create: (context) => IsFavorite(),
+                  child: TripDetails(trip: trip),
+                ),
+              ));
+        },
       ),
-      onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => TripDetails(trip: trip),
-            ));
-      },
     );
   }
 

@@ -1,3 +1,5 @@
+import 'package:flutter/widgets.dart';
+
 abstract class SignUpEvent {}
 
 class SignUpTextChangeEvent extends SignUpEvent {
@@ -12,6 +14,7 @@ class SignUpPostEvent extends SignUpEvent {
   final String name;
   final String email;
   final String pass;
+  BuildContext context;
 
-  SignUpPostEvent({required this.email, required this.name, required this.pass});
+  SignUpPostEvent(this.context, {required this.email, required this.name, required this.pass});
 }

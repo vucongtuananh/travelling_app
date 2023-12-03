@@ -301,8 +301,14 @@ class _ContentBoxLoginState extends State<ContentBoxLogin> {
   signInBtn(BuildContext context) => BlocBuilder<LoginBLoc, LoginState>(
         builder: (context, state) {
           bool isValid = (state is LoginValidState);
+          if (state is LoginLoadingState) {
+            return const CircularProgressIndicator();
+          }
+
           return GestureDetector(
-              onTap: () {},
+              onTap: () {
+                state is LoginValidState ? context.read<LoginBLoc>().add(LoginSubmitEvent(context, email: _emailController.text, password: _passController.text)) : null;
+              },
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 13),
                 width: double.infinity,
