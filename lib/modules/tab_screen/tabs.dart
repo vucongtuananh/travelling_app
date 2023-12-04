@@ -4,7 +4,7 @@ import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/color.dart';
 import 'package:travelling_app/modules/explore.dart';
 import 'package:travelling_app/modules/favorite.dart';
-import 'package:travelling_app/modules/home.dart';
+import 'package:travelling_app/modules/home_screen/home.dart';
 import 'package:travelling_app/modules/message.dart';
 import 'package:travelling_app/modules/own.dart';
 

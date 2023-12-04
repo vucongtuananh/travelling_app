@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travelling_app/firebase_options.dart';
 import 'package:travelling_app/modules/login_screen/login.dart';
-import 'package:travelling_app/modules/tabs.dart';
+import 'package:travelling_app/modules/tab_screen/tabs.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:travelling_app/data/auth/fire_auth.dart';
+import 'package:travelling_app/data/fire_store/fire_store.dart';
 import 'package:travelling_app/modules/signup_screen/sign_up_event.dart';
 import 'package:travelling_app/modules/signup_screen/signup_state.dart';
 
@@ -10,9 +11,12 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   bool isValidName = false;
   bool isValidEmail = false;
   bool isValidPass = false;
+  bool _isError = false;
   final Auth auth;
 
-  SignUpBloc({required this.auth}) : super(SignUpInitialState()) {
+  SignUpBloc({
+    required this.auth,
+  }) : super(SignUpInitialState()) {
     on<SignUpTextChangeEvent>((event, emit) {
       if (event.name.trim().isEmpty) {
         isValidName = false;
@@ -41,7 +45,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         await auth.signUpWithEmailAndPassword(email: event.email, password: event.pass);
       } on FirebaseAuthException catch (message) {
         // emit(SignUpNotifyState(notify: message.toString()));
-
+        _isError = true;
         showDialog(
           context: event.context,
           builder: (context) {
@@ -58,8 +62,11 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
           },
         );
       }
+      _isError = false;
 
+      // await fireStoreData.postUser(name: event.name, email: event.email, password: event.pass);
       emit(SignUpLoadedState());
+      // fireStoreData.postUser(name: event.name, email: event.email, password: event.pass);
     });
   }
 }

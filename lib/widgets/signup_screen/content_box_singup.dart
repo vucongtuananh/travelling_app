@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/color.dart';
 import 'package:travelling_app/modules/signup_screen/sign_up_event.dart';
-import 'package:travelling_app/modules/signup_screen/signup_cubit.dart';
+import 'package:travelling_app/modules/signup_screen/signup_bloc.dart';
 import 'package:travelling_app/modules/signup_screen/signup_state.dart';
 
 class ContentBoxSignUp extends StatefulWidget {
