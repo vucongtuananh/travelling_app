@@ -1,5 +1,5 @@
 import 'package:travelling_app/bloc/tour_guide_bloc.dart';
-import 'package:travelling_app/models/location.dart';
+import 'package:travelling_app/home/data/models/location.dart';
 
 List<Location> listLocation = [
   Location(
