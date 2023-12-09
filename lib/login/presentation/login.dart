@@ -17,23 +17,25 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        body: Stack(
-          children: [
-            const BackgroundLogin(),
-            Positioned(
-                top: MediaQuery.of(context).padding.top,
-                //this widget help me to padding the text a space that equal the heigh of status bar of phone
-                left: 24,
-                right: 24,
-                child: BlocProvider(
-                    create: (context) => LoginBLoc(
-                          auth: Auth(),
-                          // database: FireDatabase(
-                          //   Auth().currentUser!.uid,
-                          // ),
-                        ),
-                    child: const ContentBoxLogin())),
-          ],
+        body: SingleChildScrollView(
+          child: Stack(
+            children: [
+              const BackgroundLogin(),
+              Positioned(
+                  top: MediaQuery.of(context).padding.top,
+                  //this widget help me to padding the text a space that equal the heigh of status bar of phone
+                  left: 24,
+                  right: 24,
+                  child: BlocProvider(
+                      create: (context) => LoginBLoc(
+                            auth: Auth(),
+                            // database: FireDatabase(
+                            //   Auth().currentUser!.uid,
+                            // ),
+                          ),
+                      child: const ContentBoxLogin())),
+            ],
+          ),
         ));
   }
 }

@@ -16,19 +16,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(children: [
-        const BackgroundSingUp(),
-        Positioned(
-          left: 24,
-          right: 24,
-          top: MediaQuery.of(context).padding.top,
-          child: BlocProvider(
-              create: (context) => SignUpBloc(
-                    auth: Auth(),
-                  ),
-              child: const ContentBoxSignUp()),
-        )
-      ]),
+      // resizeToAvoidBottomInset: false,
+      body: SingleChildScrollView(
+        child: Stack(children: [
+          const BackgroundSingUp(),
+          Positioned(
+            left: 24,
+            right: 24,
+            top: MediaQuery.of(context).padding.top,
+            child: BlocProvider(
+                create: (context) => SignUpBloc(
+                      auth: Auth(),
+                    ),
+                child: const ContentBoxSignUp()),
+          )
+        ]),
+      ),
     );
   }
 }

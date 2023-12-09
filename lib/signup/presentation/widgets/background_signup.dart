@@ -12,6 +12,8 @@ class BackgroundSingUp extends StatelessWidget {
     var width = size.width;
     return Stack(children: [
       Container(
+        width: width,
+        height: heigh,
         color: whiteColor,
       ),
       Positioned(

@@ -30,53 +30,50 @@ class _ContentBoxLoginState extends State<ContentBoxLogin> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
-    return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          header(context),
-          const SizedBox(
-            height: 17,
-          ),
-          Center(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 32),
-              width: size.width,
-              height: size.height * 0.75,
-              decoration: const BoxDecoration(color: Color.fromRGBO(255, 255, 255, 1), borderRadius: BorderRadius.all(Radius.circular(20))),
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 49,
-                  ),
-                  Image.asset("$imagePathLdpi/icon_earth.png"),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  formLogin(context),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  handleInput(context),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  signInBtn(context),
-                ],
-              ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        header(context),
+        const SizedBox(
+          height: 17,
+        ),
+        Center(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 32),
+            width: size.width,
+            height: size.height * 0.75,
+            decoration: const BoxDecoration(color: Color.fromRGBO(255, 255, 255, 1), borderRadius: BorderRadius.all(Radius.circular(20))),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 49,
+                ),
+                Image.asset("$imagePathLdpi/icon_earth.png"),
+                const SizedBox(
+                  height: 30,
+                ),
+                formLogin(context),
+                const SizedBox(
+                  height: 20,
+                ),
+                handleInput(context),
+                const SizedBox(
+                  height: 30,
+                ),
+                signInBtn(context),
+              ],
             ),
           ),
-          const SizedBox(
-            height: 40,
-          ),
-          signInByOtherWay(),
-          const SizedBox(
-            height: 24,
-          ),
-          signUp(context)
-        ],
-      ),
+        ),
+        const SizedBox(
+          height: 40,
+        ),
+        signInByOtherWay(),
+        const SizedBox(
+          height: 24,
+        ),
+        signUp(context)
+      ],
     );
   }
 
