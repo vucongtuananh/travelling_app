@@ -8,6 +8,7 @@ import 'package:travelling_app/login/logic/login_state.dart';
 
 class LoginBLoc extends Bloc<LoginEvent, LoginState> {
   bool isValidEmail = false;
+  bool isValidPass = false;
   // final FireDatabase database;
   final Auth auth;
 
@@ -15,23 +16,28 @@ class LoginBLoc extends Bloc<LoginEvent, LoginState> {
     required this.auth,
     // required this.database,
   }) : super(LoginInitState()) {
-    on<LoginTextChangeEvent>(
-      (event, emit) {
-        if (event.email.isEmpty) {
-          isValidEmail = false;
-          emit(LoginErrorState(errorEmail: "khong bo trong emil", errorPassword: ""));
-        } else if (!EmailValidator.validate(event.email)) {
-          isValidEmail = false;
-          emit(LoginErrorState(errorEmail: "email khong dung dinh dang", errorPassword: ""));
-        } else if (event.password.isEmpty) {
-          emit(LoginErrorState(errorEmail: "", errorPassword: "khong bo trong pass"));
-          isValidEmail = true;
-        } else {
-          emit(LoginValidState());
-          isValidEmail = true;
-        }
-      },
-    );
+    on<LoginTextChangeEmailEvent>((event, emit) {
+      if (event.email.isEmpty) {
+        isValidEmail = false;
+        emit(LoginErrorEmailState(errorEmail: "khong bo trong emil"));
+      } else if (!EmailValidator.validate(event.email)) {
+        isValidEmail = false;
+        emit(LoginErrorEmailState(errorEmail: "email khong dung dinh dang"));
+      } else {
+        emit(LoginValidEmailState());
+        isValidEmail = true;
+      }
+    });
+
+    on<LoginTextChangePassEvent>((event, emit) {
+      if (event.pass.isEmpty) {
+        isValidPass = false;
+        emit(LoginErrorPassState(errorPass: 'khong duoc bo trong pass'));
+      } else {
+        isValidPass = true;
+        emit(LoginValidPassState());
+      }
+    });
     on<LoginSubmitEvent>(
       (event, emit) async {
         emit(LoginLoadingState());
