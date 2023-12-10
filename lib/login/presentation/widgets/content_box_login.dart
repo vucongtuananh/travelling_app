@@ -131,7 +131,7 @@ class _ContentBoxLoginState extends State<ContentBoxLogin> {
                   child: TextFormField(
                     controller: _emailController,
                     onChanged: (value) {
-                      context.read<LoginBLoc>().add(LoginTextChangeEvent(email: _emailController.text, password: _passController.text));
+                      context.read<LoginBLoc>().add(LoginTextChangeEmailEvent(email: _emailController.text));
                     },
                     cursorColor: const Color(0xffFFFFFF),
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Theme.of(context).colorScheme.onPrimary),
@@ -159,7 +159,7 @@ class _ContentBoxLoginState extends State<ContentBoxLogin> {
           ),
           BlocBuilder<LoginBLoc, LoginState>(
             builder: (context, state) {
-              if (state is LoginErrorState) {
+              if (state is LoginErrorEmailState) {
                 return Text(
                   state.errorEmail,
                   style: Theme.of(context).textTheme.bodySmall!.copyWith(
@@ -192,7 +192,7 @@ class _ContentBoxLoginState extends State<ContentBoxLogin> {
                     controller: _passController,
                     onChanged: (value) {
                       // _cubit.checkPass(_passController.text);
-                      context.read<LoginBLoc>().add(LoginTextChangeEvent(password: _passController.text, email: _emailController.text));
+                      context.read<LoginBLoc>().add(LoginTextChangePassEvent(pass: _passController.text));
                     },
                     obscureText: _isHidePass,
                     style: Theme.of(context).textTheme.bodySmall!.copyWith(
@@ -222,9 +222,9 @@ class _ContentBoxLoginState extends State<ContentBoxLogin> {
           ),
           BlocBuilder<LoginBLoc, LoginState>(
             builder: (context, state) {
-              if (state is LoginErrorState) {
+              if (state is LoginErrorPassState) {
                 return Text(
-                  state.errorPassword,
+                  state.errorPass,
                   style: Theme.of(context).textTheme.bodySmall!.copyWith(
                         color: Colors.red,
                       ),
@@ -297,14 +297,14 @@ class _ContentBoxLoginState extends State<ContentBoxLogin> {
       );
   signInBtn(BuildContext context) => BlocBuilder<LoginBLoc, LoginState>(
         builder: (context, state) {
-          bool isValid = (state is LoginValidState);
+          bool isValid = context.read<LoginBLoc>().isValidEmail && context.read<LoginBLoc>().isValidPass;
           if (state is LoginLoadingState) {
             return const CircularProgressIndicator();
           }
 
           return GestureDetector(
               onTap: () {
-                state is LoginValidState ? context.read<LoginBLoc>().add(LoginSubmitEvent(context, email: _emailController.text, password: _passController.text)) : null;
+                isValid ? context.read<LoginBLoc>().add(LoginSubmitEvent(context, email: _emailController.text, password: _passController.text)) : null;
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 13),

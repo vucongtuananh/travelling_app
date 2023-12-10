@@ -2,11 +2,16 @@ import 'package:flutter/widgets.dart';
 
 abstract class LoginEvent {}
 
-class LoginTextChangeEvent extends LoginEvent {
+class LoginTextChangeEmailEvent extends LoginEvent {
   final String email;
-  final String password;
 
-  LoginTextChangeEvent({required this.email, required this.password});
+  LoginTextChangeEmailEvent({required this.email});
+}
+
+class LoginTextChangePassEvent extends LoginEvent {
+  final String pass;
+
+  LoginTextChangePassEvent({required this.pass});
 }
 
 class LoginSubmitEvent extends LoginEvent {

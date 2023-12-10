@@ -11,63 +11,63 @@ class FireStoreData {
     await firebaseStorage.collection("user").doc(currentUserId).set({"user-name": name, "email": email, "password": password});
   }
 
-  // postData({
-  //   required String describe,
-  //   required String img,
-  //   required String location,
-  //   required double price,
-  //   required double rate,
-  //   required String title,
-  //   required String id1,
-  //   required String id2,
-  //   required String id3,
-  //   required String id4,
-  // }) async {
-  //   await firebaseStorage.collection("user").doc(currentUserId).collection("trip").add({
-  //     "trip": [
-  //       {
-  //         "describe": describe,
-  //         "img": img,
-  //         "location": location,
-  //         "price": price,
-  //         "rate": rate,
-  //         "title": title,
-  //         "isFavorite": false,
-  //         "id": id1,
-  //       },
-  //       {
-  //         "describe": describe,
-  //         "img": img,
-  //         "location": location,
-  //         "price": price,
-  //         "rate": rate,
-  //         "title": title,
-  //         "isFavorite": false,
-  //         "id": id2,
-  //       },
-  //       {
-  //         "describe": describe,
-  //         "img": img,
-  //         "location": location,
-  //         "price": price,
-  //         "rate": rate,
-  //         "title": title,
-  //         "isFavorite": false,
-  //         "id": id3,
-  //       },
-  //       {
-  //         "describe": describe,
-  //         "img": img,
-  //         "location": location,
-  //         "price": price,
-  //         "rate": rate,
-  //         "title": title,
-  //         "isFavorite": false,
-  //         "id": id4,
-  //       }
-  //     ]
-  //   });
-  // }
+  postData({
+    required String describe,
+    required String img,
+    required String location,
+    required double price,
+    required double rate,
+    required String title,
+    required String id1,
+    required String id2,
+    required String id3,
+    required String id4,
+  }) async {
+    await firebaseStorage.collection("user").doc(currentUserId).collection("trip").add({
+      "trip": [
+        {
+          "describe": describe,
+          "img": img,
+          "location": location,
+          "price": price,
+          "rate": rate,
+          "title": title,
+          "isFavorite": false,
+          "id": id1,
+        },
+        {
+          "describe": describe,
+          "img": img,
+          "location": location,
+          "price": price,
+          "rate": rate,
+          "title": title,
+          "isFavorite": false,
+          "id": id2,
+        },
+        {
+          "describe": describe,
+          "img": img,
+          "location": location,
+          "price": price,
+          "rate": rate,
+          "title": title,
+          "isFavorite": false,
+          "id": id3,
+        },
+        {
+          "describe": describe,
+          "img": img,
+          "location": location,
+          "price": price,
+          "rate": rate,
+          "title": title,
+          "isFavorite": false,
+          "id": id4,
+        }
+      ]
+    });
+  }
 
   Future<List<Trip>> getData() async {
     final List<Trip> listData = [];
