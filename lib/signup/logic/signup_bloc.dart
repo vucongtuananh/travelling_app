@@ -211,16 +211,43 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
 
         await fireStoreData.postData(
           id1: "1",
-          id2: "2",
-          id3: "3",
-          id4: "4",
+          describe:
+              "What is Redfish Lake known for?\nRedfish Lake is the final stop on the longest Pacific salmon run in North America,\n which requires long-distance swimmers, such as Sockeye and Chinook Salmon,\n to over miles upstream to return to their spawning grounds.\nRedfish Lake is an alpine lake in Custer County,aho,  south of Stanley.\n It is the largest lake within the Sawtooth National Recreation Area.",
+          img: "https://ak-d.tripcdn.com/images/10041c000001dadviFB7A.jpg",
+          location: "Hà Nội",
+          price: 50,
+          rate: 4.5,
+          title: "RedFish River",
+        );
+        await fireStoreData.postData(
+          id1: "2",
           describe:
               "What is Redfish Lake known for?\nRedfish Lake is the final stop on the longest Pacific salmon run in North America,\n which requires long-distance swimmers, such as Sockeye and Chinook Salmon,\n to over miles upstream to return to their spawning grounds.\nRedfish Lake is an alpine lake in Custer County,aho,  south of Stanley.\n It is the largest lake within the Sawtooth National Recreation Area.",
           img: "https://ak-d.tripcdn.com/images/10041c000001dadviFB7A.jpg",
           location: "Idaho",
           price: 50,
           rate: 4.5,
-          title: "RedFish Lake",
+          title: "Conditional Lake",
+        );
+        await fireStoreData.postData(
+          id1: "3",
+          describe:
+              "What is Redfish Lake known for?\nRedfish Lake is the final stop on the longest Pacific salmon run in North America,\n which requires long-distance swimmers, such as Sockeye and Chinook Salmon,\n to over miles upstream to return to their spawning grounds.\nRedfish Lake is an alpine lake in Custer County,aho,  south of Stanley.\n It is the largest lake within the Sawtooth National Recreation Area.",
+          img: "https://ak-d.tripcdn.com/images/10041c000001dadviFB7A.jpg",
+          location: "Thái Bình",
+          price: 50,
+          rate: 4.5,
+          title: "Phuzi Mountain",
+        );
+        await fireStoreData.postData(
+          id1: "4",
+          describe:
+              "What is Redfish Lake known for?\nRedfish Lake is the final stop on the longest Pacific salmon run in North America,\n which requires long-distance swimmers, such as Sockeye and Chinook Salmon,\n to over miles upstream to return to their spawning grounds.\nRedfish Lake is an alpine lake in Custer County,aho,  south of Stanley.\n It is the largest lake within the Sawtooth National Recreation Area.",
+          img: "https://ak-d.tripcdn.com/images/10041c000001dadviFB7A.jpg",
+          location: "Đà Nẵng",
+          price: 50,
+          rate: 4.5,
+          title: "DongChau Beach",
         );
       }
       emit(SignUpLoadedState());

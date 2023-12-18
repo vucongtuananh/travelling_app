@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Trip {
   final String imgPath;
   final String title;
@@ -20,16 +22,24 @@ class Trip {
   });
 
   factory Trip.fromFirestore(
-    Map<String, dynamic> snapshot,
+    QueryDocumentSnapshot<Map<String, dynamic>> snapshot,
   ) {
-    final data = snapshot;
+    final data = snapshot.data();
+    double getPrice(dynamic price) {
+      if (price.runtimeType is String) {
+        return double.parse(price);
+      } else {
+        return price.toDouble();
+      }
+    }
+
     return Trip(
       isFavorite: data['isFavorite'],
       id: data['id'],
       describe: data['describe'],
       imgPath: data['img'],
       location: data['location'],
-      price: data['price'],
+      price: getPrice(data['price']),
       rate: data['rate'],
       title: data['title'],
     );

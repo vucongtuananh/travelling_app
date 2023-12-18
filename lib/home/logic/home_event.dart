@@ -8,3 +8,8 @@ class HomeMakeFavoriteTripEvent extends HomeEvent {
   final Trip trip;
   HomeMakeFavoriteTripEvent({required this.trip});
 }
+
+class HomeReStartEvent extends HomeEvent {
+  final Trip trip;
+  HomeReStartEvent({required this.trip});
+}

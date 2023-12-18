@@ -1,15 +1,20 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/color.dart';
 import 'package:travelling_app/const/fonts.dart';
+import 'package:travelling_app/home/data/fire_store/fire_store.dart';
 import 'package:travelling_app/home/data/models/trip.dart';
+import 'package:travelling_app/home/logic/home_bloc.dart';
 import 'package:travelling_app/home/presentation/trip_details.dart';
 import 'package:travelling_app/widgets/container_button.dart';
 
 class SavedTrip extends StatelessWidget {
-  const SavedTrip({super.key, required this.trip});
+  SavedTrip({super.key, required this.trip});
 
+  FireStoreData _fireStoreData = FireStoreData(currentUserId: FirebaseAuth.instance.currentUser!.uid);
   final Trip trip;
   @override
   Widget build(BuildContext context) {
@@ -18,7 +23,10 @@ class SavedTrip extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => TripDetails(trip: trip),
+              builder: (_) => BlocProvider(
+                create: (context) => HomeBloc(fireStoreData: _fireStoreData),
+                child: TripDetails(trip: trip),
+              ),
             ));
       },
       child: Container(
@@ -35,8 +43,8 @@ class SavedTrip extends StatelessWidget {
                 width: 141,
                 height: 90,
                 clipBehavior: Clip.hardEdge,
-                child: Image.asset(
-                  "$imagePathHdpi/${trip.imgPath}",
+                child: Image.network(
+                  trip.imgPath,
                   fit: BoxFit.cover,
                 )),
             const SizedBox(

@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:travelling_app/home/data/models/trip.dart';
 
 abstract class HomeState extends Equatable {}
 
@@ -19,9 +18,18 @@ class HomeLoadingState extends HomeState {
 }
 
 class HomeFavoriteTripState extends HomeState {
-  final List<Trip> listTrip;
   final bool isFavorite;
-  HomeFavoriteTripState({required this.isFavorite, required this.listTrip});
+  HomeFavoriteTripState({
+    required this.isFavorite,
+  });
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [isFavorite];
+}
+
+class HomeStartFavoriteTripState extends HomeState {
+  final bool isFavorite;
+  HomeStartFavoriteTripState({required this.isFavorite});
+
+  @override
+  List<Object?> get props => [isFavorite];
 }

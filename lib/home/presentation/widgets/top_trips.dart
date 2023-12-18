@@ -2,17 +2,30 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:travelling_app/bloc/favorite_bloc.dart';
 import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/color.dart';
 import 'package:travelling_app/home/data/fire_store/fire_store.dart';
+import 'package:travelling_app/home/logic/home_bloc.dart';
+import 'package:travelling_app/home/logic/home_event.dart';
+import 'package:travelling_app/home/logic/home_state.dart';
 import 'package:travelling_app/home/presentation/trip_details.dart';
 import '../../data/models/trip.dart';
 
-class TopTrip extends StatelessWidget {
+class TopTrip extends StatefulWidget {
   const TopTrip({super.key, required this.trip});
 
   final Trip trip;
+
+  @override
+  State<TopTrip> createState() => _TopTripState();
+}
+
+class _TopTripState extends State<TopTrip> {
+  @override
+  void didChangeDependencies() {
+    context.read<HomeBloc>().add(HomeReStartEvent(trip: widget.trip));
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,14 +47,14 @@ class TopTrip extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Hero(
-              tag: trip.id,
+              tag: widget.trip.id,
               child: Container(
                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
                 padding: const EdgeInsets.symmetric(horizontal: 5),
                 height: 150,
                 clipBehavior: Clip.hardEdge,
                 child: Image.network(
-                  trip.imgPath,
+                  widget.trip.imgPath,
                   fit: BoxFit.fitHeight,
                 ),
               ),
@@ -73,9 +86,8 @@ class TopTrip extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (_) => BlocProvider.value(
-                value: BlocProvider.of<IsFavorite>(context),
-                // create: (context) => IsFavorite(),
-                child: TripDetails(trip: trip),
+                value: BlocProvider.of<HomeBloc>(context),
+                child: TripDetails(trip: widget.trip),
               ),
             ));
       },
@@ -88,14 +100,20 @@ class TopTrip extends StatelessWidget {
       children: [
         RichText(
           text: TextSpan(
-              text: "\$${trip.price}",
+              text: "\$${widget.trip.price}",
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: const Color(0xff008FA0), fontSize: 12, fontWeight: FontWeight.w400),
               children: [TextSpan(text: " /Visit", style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: blackColor, fontSize: 12, fontWeight: FontWeight.w400))]),
         ),
-        BlocBuilder<IsFavorite, List<Trip>>(
+        BlocBuilder<HomeBloc, HomeState>(
           builder: (context, state) {
-            var isFavorite = context.read<IsFavorite>().state.contains(trip);
-            if (isFavorite) {
+            if (state == HomeFavoriteTripState(isFavorite: false) || state == HomeStartFavoriteTripState(isFavorite: false)) {
+              return SvgPicture.asset(
+                "$imagePathLdpi/heart_white.svg",
+                width: 10,
+                height: 10,
+              );
+            }
+            if (state == HomeFavoriteTripState(isFavorite: true) || state == HomeStartFavoriteTripState(isFavorite: true)) {
               return SvgPicture.asset(
                 "$imagePathLdpi/heart_icon.svg",
                 width: 10,
@@ -120,7 +138,7 @@ class TopTrip extends StatelessWidget {
         SvgPicture.asset("$imagePathLdpi/location_blur_icon.svg"),
         const SizedBox(width: 4),
         Text(
-          trip.location,
+          widget.trip.location,
           style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: const Color(0xff636363), fontSize: 11, fontWeight: FontWeight.w400),
         )
       ],
@@ -133,14 +151,14 @@ class TopTrip extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          trip.title,
+          widget.trip.title,
           style: Theme.of(context).textTheme.titleLarge!.copyWith(color: const Color(0xff1E1E1E), fontSize: 13, fontWeight: FontWeight.w600),
         ),
         Row(
           children: [
             SvgPicture.asset("$imagePathLdpi/star_icon.svg"),
             Text(
-              "${trip.rate}",
+              "${widget.trip.rate}",
               style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: const Color(0xff636363), fontSize: 10, fontWeight: FontWeight.w400),
             )
           ],

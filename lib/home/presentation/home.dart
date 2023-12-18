@@ -2,12 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:travelling_app/bloc/favorite_bloc.dart';
 import 'package:travelling_app/bloc/top_trip_bloc.dart';
 import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/color.dart';
 import 'package:travelling_app/home/data/fire_store/fire_store.dart';
 import 'package:travelling_app/home/data/models/trip.dart';
+import 'package:travelling_app/home/logic/home_bloc.dart';
 import 'package:travelling_app/home/presentation/widgets/group_trips.dart';
 import 'package:travelling_app/home/presentation/widgets/top_trips.dart';
 
@@ -38,19 +38,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 20, left: 20, right: 20),
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              header(),
-              const SizedBox(
-                height: 20,
-              ),
-              body()
-            ],
+    return RefreshIndicator(
+      onRefresh: () => _getDataTrip(),
+      child: Scaffold(
+        body: Padding(
+          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 20, left: 20, right: 20),
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                header(),
+                const SizedBox(
+                  height: 20,
+                ),
+                body()
+              ],
+            ),
           ),
         ),
       ),
@@ -333,7 +336,7 @@ class _HomeScreenState extends State<HomeScreen> {
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
               return BlocProvider(
-                create: (context) => IsFavorite(),
+                create: (context) => HomeBloc(fireStoreData: _fireStoreData),
                 child: TopTrip(trip: _listTrip[index]),
               );
             },

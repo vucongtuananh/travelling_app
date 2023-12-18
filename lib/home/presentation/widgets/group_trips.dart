@@ -4,7 +4,7 @@ import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/color.dart';
 import 'package:travelling_app/const/fonts.dart';
 import 'package:travelling_app/home/data/models/group_trip.dart';
-import 'package:travelling_app/home/data/models/user.dart';
+import 'package:travelling_app/signup/data/models/user.dart';
 
 class GroupTripCard extends StatelessWidget {
   const GroupTripCard({super.key, required this.groupTrip});
