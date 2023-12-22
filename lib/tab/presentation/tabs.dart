@@ -7,8 +7,8 @@ import 'package:travelling_app/const/color.dart';
 import 'package:travelling_app/home/data/fire_store/fire_store.dart';
 import 'package:travelling_app/explore/presentation/explore.dart';
 import 'package:travelling_app/favorite/presentation/favorite.dart';
+import 'package:travelling_app/home/logic/search_bloc/search_bloc.dart';
 import 'package:travelling_app/home/presentation/home.dart';
-import 'package:travelling_app/home/logic/home_bloc.dart';
 import 'package:travelling_app/message/presention/message.dart';
 import 'package:travelling_app/own/presention/own.dart';
 
@@ -23,7 +23,17 @@ final FireStoreData _fireStoreData = FireStoreData(currentUserId: FirebaseAuth.i
 
 class _TabsScreenState extends State<TabsScreen> {
   int _currentIndex = 0;
-  final List<Widget> _pages = [const HomeScreen(), const ExploreScreen(), const MessageScreen(), const FavoriteScreen(), const OwnDetailScreen()];
+  final List<Widget> _pages = [
+    MultiBlocProvider(providers: [
+      BlocProvider(
+        create: (_) => SearchBloc(),
+      )
+    ], child: const HomeScreen()),
+    const ExploreScreen(),
+    const MessageScreen(),
+    const FavoriteScreen(),
+    const OwnDetailScreen()
+  ];
 
   @override
   Widget build(BuildContext context) {

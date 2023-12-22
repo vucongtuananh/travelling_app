@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travelling_app/firebase_options.dart';
+import 'package:travelling_app/home/data/fire_store/fire_store.dart';
+import 'package:travelling_app/home/logic/home_bloc/home_bloc.dart';
 import 'package:travelling_app/login/presentation/login.dart';
 import 'package:travelling_app/tab/presentation/tabs.dart';
 
@@ -30,7 +33,11 @@ class MyApp extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return const TabsScreen();
+              return MultiBlocProvider(providers: [
+                BlocProvider(
+                  create: (_) => HomeBloc(fireStoreData: FireStoreData(currentUserId: FirebaseAuth.instance.currentUser!.uid)),
+                )
+              ], child: const TabsScreen());
             }
             return const LoginScreen();
           }),

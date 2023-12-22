@@ -7,7 +7,7 @@ import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/color.dart';
 import 'package:travelling_app/home/data/fire_store/fire_store.dart';
 import 'package:travelling_app/home/data/models/trip.dart';
-import 'package:travelling_app/home/logic/home_bloc.dart';
+import 'package:travelling_app/home/logic/search_bloc/search_bloc.dart';
 import 'package:travelling_app/home/presentation/widgets/group_trips.dart';
 import 'package:travelling_app/home/presentation/widgets/top_trips.dart';
 
@@ -22,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   var _currentIndex = 0;
   final FireStoreData _fireStoreData = FireStoreData(currentUserId: FirebaseAuth.instance.currentUser!.uid);
   late List<Trip> _listTrip = [];
+  final TextEditingController _searchController = TextEditingController();
   _getDataTrip() async {
     final listData = await _fireStoreData.getData();
     setState(() {
@@ -29,17 +30,67 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  Future<void> _pullRefresh() async {
+    await Future.delayed(const Duration(microseconds: 1));
+  }
+
+  OverlayEntry? _overlayEntry;
+
   @override
   void initState() {
     super.initState();
 
     _getDataTrip();
+    if (_searchController.text.isEmpty) {
+      if (_overlayEntry != null) {
+        _overlayEntry!.remove();
+      }
+    }
+    _overlayEntry = _createOverlayEntry(context: context);
+  }
+
+  OverlayEntry _createOverlayEntry({required BuildContext context}) {
+    RenderBox renderBox = context.findRenderObject() as RenderBox;
+    var size = renderBox.size;
+    var offset = renderBox.localToGlobal(Offset.zero);
+
+    return OverlayEntry(
+      builder: (_) {
+        final _searchBloc = context.read<SearchBloc>().state;
+
+        if (_searchBloc is SearchSuccessState) {
+          return Positioned(
+            left: offset.dx,
+            top: size.height + 5.0,
+            width: size.width,
+            child: Material(
+              elevation: 1.0,
+              child: ListView.builder(
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                itemBuilder: (context, index) => Text(_searchBloc.listTripSearch[index].title),
+                itemCount: _searchBloc.listTripSearch.length,
+              ),
+            ),
+          );
+        }
+        if (_searchBloc is SearchLoadingState) {
+          return Positioned(
+            left: offset.dx,
+            top: size.height + 5.0,
+            width: size.width,
+            child: const Material(elevation: 1.0, child: Center(child: CircularProgressIndicator())),
+          );
+        }
+        return const SizedBox();
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () => _getDataTrip(),
+      onRefresh: () => _pullRefresh(),
       child: Scaffold(
         body: Padding(
           padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 20, left: 20, right: 20),
@@ -47,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
             physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
-                header(),
+                header(context),
                 const SizedBox(
                   height: 20,
                 ),
@@ -60,42 +111,63 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget searchBar() => Row(
-        children: [
-          Expanded(
-            // flex: 5,
-            child: Container(
-              height: 45,
-              decoration: BoxDecoration(color: whiteColor, border: Border.all(color: const Color(0xffE9E9E9)), borderRadius: BorderRadius.circular(20)),
-              child: Row(children: [
-                const SizedBox(
-                  width: 15,
-                ),
-                SvgPicture.asset("$imagePathLdpi/search_icon.svg"),
-                const SizedBox(
-                  width: 8,
-                ),
-                const Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(border: InputBorder.none, hintText: "Search"),
+  Widget searchBar(BuildContext context) {
+    return Row(
+      children: [
+        BlocBuilder<SearchBloc, SearchState>(
+          builder: (context, state) {
+            if (state is SearchSuccessState) {
+              for (var t in state.listTripSearch) {
+                print(t.title);
+              }
+            }
+            return Expanded(
+              // flex: 5,
+              child: Container(
+                height: 45,
+                decoration: BoxDecoration(color: whiteColor, border: Border.all(color: const Color(0xffE9E9E9)), borderRadius: BorderRadius.circular(20)),
+                child: Row(children: [
+                  const SizedBox(
+                    width: 15,
                   ),
-                )
-              ]),
-            ),
-          ),
-          const SizedBox(
-            width: 5,
-          ),
-          Container(
-            height: 45,
-            width: 45,
-            // padding: const EdgeInsets.all(30),
-            decoration: BoxDecoration(color: mainColor, borderRadius: BorderRadius.circular(10)),
-            child: Image.asset("$imagePathLdpi/setting.png"),
-          )
-        ],
-      );
-  Widget header() => Column(
+                  const Icon(Icons.search),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  Expanded(
+                    child: Builder(builder: (context) {
+                      return TextField(
+                        onTap: () {
+                          Overlay.of(context).insert(_overlayEntry!);
+                        },
+                        onChanged: (value) {
+                          context.read<SearchBloc>().add(SearchStartEvent(input: _searchController.text));
+                        },
+                        controller: _searchController,
+                        decoration: const InputDecoration(border: InputBorder.none, hintText: "Search"),
+                      );
+                    }),
+                  )
+                ]),
+              ),
+            );
+          },
+        ),
+        const SizedBox(
+          width: 5,
+        ),
+        Container(
+          height: 45,
+          width: 45,
+          // padding: const EdgeInsets.all(30),
+          decoration: BoxDecoration(color: mainColor, borderRadius: BorderRadius.circular(10)),
+          child: Image.asset("$imagePathLdpi/setting.png"),
+        )
+      ],
+    );
+  }
+
+  Widget header(BuildContext context) => Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -130,41 +202,7 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(
             height: 20,
           ),
-          Row(
-            children: [
-              Expanded(
-                // flex: 5,
-                child: Container(
-                  height: 45,
-                  decoration: BoxDecoration(color: whiteColor, border: Border.all(color: const Color(0xffE9E9E9)), borderRadius: BorderRadius.circular(20)),
-                  child: Row(children: [
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    SvgPicture.asset("$imagePathLdpi/search_icon.svg"),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    const Expanded(
-                      child: TextField(
-                        decoration: InputDecoration(border: InputBorder.none, hintText: "Search"),
-                      ),
-                    )
-                  ]),
-                ),
-              ),
-              const SizedBox(
-                width: 5,
-              ),
-              Container(
-                height: 45,
-                width: 45,
-                // padding: const EdgeInsets.all(30),
-                decoration: BoxDecoration(color: mainColor, borderRadius: BorderRadius.circular(10)),
-                child: Image.asset("$imagePathLdpi/setting.png"),
-              )
-            ],
-          ),
+          searchBar(context),
         ],
       );
   Widget body() {
@@ -335,10 +373,7 @@ class _HomeScreenState extends State<HomeScreen> {
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
-              return BlocProvider(
-                create: (context) => HomeBloc(fireStoreData: _fireStoreData),
-                child: TopTrip(trip: _listTrip[index]),
-              );
+              return TopTrip(trip: _listTrip[index]);
             },
             itemCount: _listTrip.length,
           ),

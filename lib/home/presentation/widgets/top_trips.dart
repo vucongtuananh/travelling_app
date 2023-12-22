@@ -5,9 +5,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/color.dart';
 import 'package:travelling_app/home/data/fire_store/fire_store.dart';
-import 'package:travelling_app/home/logic/home_bloc.dart';
-import 'package:travelling_app/home/logic/home_event.dart';
-import 'package:travelling_app/home/logic/home_state.dart';
+import 'package:travelling_app/home/logic/home_bloc/home_bloc.dart';
+import 'package:travelling_app/home/logic/home_bloc/home_event.dart';
+import 'package:travelling_app/home/logic/home_bloc/home_state.dart';
 import 'package:travelling_app/home/presentation/trip_details.dart';
 import '../../data/models/trip.dart';
 
@@ -25,6 +25,12 @@ class _TopTripState extends State<TopTrip> {
   void didChangeDependencies() {
     context.read<HomeBloc>().add(HomeReStartEvent(trip: widget.trip));
     super.didChangeDependencies();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
   }
 
   @override
@@ -106,14 +112,14 @@ class _TopTripState extends State<TopTrip> {
         ),
         BlocBuilder<HomeBloc, HomeState>(
           builder: (context, state) {
-            if (state == HomeFavoriteTripState(isFavorite: false) || state == HomeStartFavoriteTripState(isFavorite: false)) {
+            if (state == HomeFavoriteTripState(isFavorite: false, id: widget.trip.id) || state == HomeStartFavoriteTripState(isFavorite: false, id: widget.trip.id)) {
               return SvgPicture.asset(
                 "$imagePathLdpi/heart_white.svg",
                 width: 10,
                 height: 10,
               );
             }
-            if (state == HomeFavoriteTripState(isFavorite: true) || state == HomeStartFavoriteTripState(isFavorite: true)) {
+            if (state == HomeFavoriteTripState(isFavorite: true, id: widget.trip.id) || state == HomeStartFavoriteTripState(isFavorite: true, id: widget.trip.id)) {
               return SvgPicture.asset(
                 "$imagePathLdpi/heart_icon.svg",
                 width: 10,

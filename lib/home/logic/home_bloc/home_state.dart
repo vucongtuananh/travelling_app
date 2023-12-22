@@ -19,17 +19,17 @@ class HomeLoadingState extends HomeState {
 
 class HomeFavoriteTripState extends HomeState {
   final bool isFavorite;
-  HomeFavoriteTripState({
-    required this.isFavorite,
-  });
+  final String id;
+  HomeFavoriteTripState({required this.isFavorite, required this.id});
   @override
-  List<Object?> get props => [isFavorite];
+  List<Object?> get props => [isFavorite, id];
 }
 
 class HomeStartFavoriteTripState extends HomeState {
   final bool isFavorite;
-  HomeStartFavoriteTripState({required this.isFavorite});
+  final String id;
+  HomeStartFavoriteTripState({required this.isFavorite, required this.id});
 
   @override
-  List<Object?> get props => [isFavorite];
+  List<Object?> get props => [isFavorite, id];
 }

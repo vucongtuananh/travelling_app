@@ -5,9 +5,9 @@ import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/color.dart';
 import 'package:travelling_app/const/fonts.dart';
 import 'package:travelling_app/home/data/models/trip.dart';
-import 'package:travelling_app/home/logic/home_bloc.dart';
-import 'package:travelling_app/home/logic/home_event.dart';
-import 'package:travelling_app/home/logic/home_state.dart';
+import 'package:travelling_app/home/logic/home_bloc/home_bloc.dart';
+import 'package:travelling_app/home/logic/home_bloc/home_event.dart';
+import 'package:travelling_app/home/logic/home_bloc/home_state.dart';
 import 'package:travelling_app/widgets/container_button.dart';
 
 class TripDetails extends StatefulWidget {
@@ -100,14 +100,14 @@ class _TripDetailsState extends State<TripDetails> {
             if (state == HomeLoadingState()) {
               return const CircularProgressIndicator();
             }
-            if (state == HomeFavoriteTripState(isFavorite: false) || state == HomeStartFavoriteTripState(isFavorite: false)) {
+            if (state == HomeFavoriteTripState(isFavorite: false, id: widget.trip.id) || state == HomeStartFavoriteTripState(isFavorite: false, id: widget.trip.id)) {
               return SvgPicture.asset(
                 "$imagePathLdpi/heart_white.svg",
                 width: 30,
                 height: 30,
               );
             }
-            if (state == HomeFavoriteTripState(isFavorite: true) || state == HomeStartFavoriteTripState(isFavorite: true)) {
+            if (state == HomeFavoriteTripState(isFavorite: true, id: widget.trip.id) || state == HomeStartFavoriteTripState(isFavorite: true, id: widget.trip.id)) {
               return SvgPicture.asset(
                 "$imagePathLdpi/heart_icon.svg",
                 width: 30,

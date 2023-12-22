@@ -7,14 +7,14 @@ import 'package:travelling_app/const/color.dart';
 import 'package:travelling_app/const/fonts.dart';
 import 'package:travelling_app/home/data/fire_store/fire_store.dart';
 import 'package:travelling_app/home/data/models/trip.dart';
-import 'package:travelling_app/home/logic/home_bloc.dart';
+import 'package:travelling_app/home/logic/home_bloc/home_bloc.dart';
 import 'package:travelling_app/home/presentation/trip_details.dart';
 import 'package:travelling_app/widgets/container_button.dart';
 
 class SavedTrip extends StatelessWidget {
   SavedTrip({super.key, required this.trip});
 
-  FireStoreData _fireStoreData = FireStoreData(currentUserId: FirebaseAuth.instance.currentUser!.uid);
+  final FireStoreData _fireStoreData = FireStoreData(currentUserId: FirebaseAuth.instance.currentUser!.uid);
   final Trip trip;
   @override
   Widget build(BuildContext context) {
@@ -23,8 +23,8 @@ class SavedTrip extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => BlocProvider(
-                create: (context) => HomeBloc(fireStoreData: _fireStoreData),
+              builder: (_) => BlocProvider.value(
+                value: BlocProvider.of<HomeBloc>(context),
                 child: TripDetails(trip: trip),
               ),
             ));
