@@ -7,6 +7,8 @@ import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/color.dart';
 import 'package:travelling_app/home/data/fire_store/fire_store.dart';
 import 'package:travelling_app/home/data/models/trip.dart';
+import 'package:travelling_app/home/logic/home_bloc/home_bloc.dart';
+import 'package:travelling_app/home/logic/home_bloc/home_event.dart';
 import 'package:travelling_app/home/logic/search_bloc/search_bloc.dart';
 import 'package:travelling_app/home/presentation/widgets/group_trips.dart';
 import 'package:travelling_app/home/presentation/widgets/top_trips.dart';
@@ -31,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _pullRefresh() async {
-    await Future.delayed(const Duration(microseconds: 1));
+    // await Future.delayed(const Duration(microseconds: 1));
   }
 
   OverlayEntry? _overlayEntry;
@@ -46,46 +48,53 @@ class _HomeScreenState extends State<HomeScreen> {
         _overlayEntry!.remove();
       }
     }
-    _overlayEntry = _createOverlayEntry(context: context);
+
+    // _overlayEntry = _createOverlayEntry(context: context);
   }
 
-  OverlayEntry _createOverlayEntry({required BuildContext context}) {
-    RenderBox renderBox = context.findRenderObject() as RenderBox;
-    var size = renderBox.size;
-    var offset = renderBox.localToGlobal(Offset.zero);
-
-    return OverlayEntry(
-      builder: (_) {
-        final _searchBloc = context.read<SearchBloc>().state;
-
-        if (_searchBloc is SearchSuccessState) {
-          return Positioned(
-            left: offset.dx,
-            top: size.height + 5.0,
-            width: size.width,
-            child: Material(
-              elevation: 1.0,
-              child: ListView.builder(
-                padding: EdgeInsets.zero,
-                shrinkWrap: true,
-                itemBuilder: (context, index) => Text(_searchBloc.listTripSearch[index].title),
-                itemCount: _searchBloc.listTripSearch.length,
-              ),
-            ),
-          );
-        }
-        if (_searchBloc is SearchLoadingState) {
-          return Positioned(
-            left: offset.dx,
-            top: size.height + 5.0,
-            width: size.width,
-            child: const Material(elevation: 1.0, child: Center(child: CircularProgressIndicator())),
-          );
-        }
-        return const SizedBox();
-      },
-    );
+  @override
+  void didChangeDependencies() {
+    // context.read<HomeBloc>().add(HomeReStartEvent(trip: );
+    super.didChangeDependencies();
   }
+
+  // OverlayEntry _createOverlayEntry({required BuildContext context}) {
+  //   RenderBox renderBox = context.findRenderObject() as RenderBox;
+  //   var size = renderBox.size;
+  //   var offset = renderBox.localToGlobal(Offset.zero);
+
+  //   return OverlayEntry(
+  //     builder: (_) {
+  //       final _searchBloc = context.read<SearchBloc>().state;
+
+  //       if (_searchBloc is SearchSuccessState) {
+  //         return Positioned(
+  //           left: offset.dx,
+  //           top: size.height + 5.0,
+  //           width: size.width,
+  //           child: Material(
+  //             elevation: 1.0,
+  //             child: ListView.builder(
+  //               padding: EdgeInsets.zero,
+  //               shrinkWrap: true,
+  //               itemBuilder: (context, index) => Text(_searchBloc.listTripSearch[index].title),
+  //               itemCount: _searchBloc.listTripSearch.length,
+  //             ),
+  //           ),
+  //         );
+  //       }
+  //       if (_searchBloc is SearchLoadingState) {
+  //         return Positioned(
+  //           left: offset.dx,
+  //           top: size.height + 5.0,
+  //           width: size.width,
+  //           child: const Material(elevation: 1.0, child: Center(child: CircularProgressIndicator())),
+  //         );
+  //       }
+  //       return const SizedBox();
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -137,9 +146,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   Expanded(
                     child: Builder(builder: (context) {
                       return TextField(
-                        onTap: () {
-                          Overlay.of(context).insert(_overlayEntry!);
-                        },
+                        // onTap: () {
+                        //   Overlay.of(context).insert(_overlayEntry!);
+                        // },
                         onChanged: (value) {
                           context.read<SearchBloc>().add(SearchStartEvent(input: _searchController.text));
                         },
@@ -203,6 +212,34 @@ class _HomeScreenState extends State<HomeScreen> {
             height: 20,
           ),
           searchBar(context),
+          SizedBox(
+            width: 250,
+            height: 250,
+            child: Stack(
+              children: <Widget>[
+                Container(
+                  width: 250,
+                  height: 250,
+                  color: Colors.white,
+                ),
+                Container(
+                  padding: const EdgeInsets.all(5.0),
+                  alignment: Alignment.bottomCenter,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: <Color>[Colors.black.withAlpha(0), Colors.black12, Colors.black45],
+                    ),
+                  ),
+                  child: const Text(
+                    'Foreground Text',
+                    style: TextStyle(color: Colors.white, fontSize: 20.0),
+                  ),
+                ),
+              ],
+            ),
+          )
         ],
       );
   Widget body() {
@@ -373,7 +410,10 @@ class _HomeScreenState extends State<HomeScreen> {
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
-              return TopTrip(trip: _listTrip[index]);
+              return BlocProvider(
+                create: (context) => HomeBloc(fireStoreData: _fireStoreData),
+                child: TopTrip(trip: _listTrip[index]),
+              );
             },
             itemCount: _listTrip.length,
           ),

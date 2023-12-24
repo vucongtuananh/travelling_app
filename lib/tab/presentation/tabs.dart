@@ -38,7 +38,8 @@ class _TabsScreenState extends State<TabsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: IndexedStack(index: _currentIndex, children: _pages),
+        // body: IndexedStack(index: _currentIndex, children: _pages),
+        body: _pages[_currentIndex],
         bottomNavigationBar: Container(
           height: 60,
           decoration: const BoxDecoration(
