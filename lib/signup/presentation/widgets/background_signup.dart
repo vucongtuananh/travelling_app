@@ -13,7 +13,7 @@ class BackgroundSingUp extends StatelessWidget {
     return Stack(children: [
       Container(
         width: width,
-        height: heigh,
+        height: heigh * 1.05,
         color: whiteColor,
       ),
       Positioned(

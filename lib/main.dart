@@ -7,6 +7,7 @@ import 'package:travelling_app/firebase_options.dart';
 import 'package:travelling_app/home/data/fire_store/fire_store.dart';
 import 'package:travelling_app/home/logic/home_bloc/home_bloc.dart';
 import 'package:travelling_app/login/presentation/login.dart';
+import 'package:travelling_app/signup/presentation/signup.dart';
 import 'package:travelling_app/tab/presentation/tabs.dart';
 
 Future<void> main() async {

@@ -29,51 +29,60 @@ class _ContentBoxLoginState extends State<ContentBoxLogin> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-
+    print(size.height);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        header(context),
-        const SizedBox(
-          height: 17,
+        header(size, context),
+        SizedBox(
+          height: size.height * 0.02,
         ),
         Center(
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 32),
             width: size.width,
-            height: size.height * 0.75,
+            height: size.height * 0.7,
             decoration: const BoxDecoration(color: Color.fromRGBO(255, 255, 255, 1), borderRadius: BorderRadius.all(Radius.circular(20))),
             child: Column(
               children: [
-                const SizedBox(
-                  height: 49,
+                SizedBox(
+                  height: size.height * 0.02,
                 ),
-                Image.asset("$imagePathLdpi/icon_earth.png"),
-                const SizedBox(
-                  height: 30,
+                SizedBox(width: size.width * 0.5, height: size.height * 0.25, child: Image.asset("$imagePathLdpi/icon_earth.png")),
+                SizedBox(
+                  height: size.height * 0.02,
                 ),
-                formLogin(context),
-                const SizedBox(
-                  height: 20,
+                formLogin(size, context),
+                SizedBox(
+                  height: size.height * 0.01,
                 ),
                 handleInput(context),
-                const SizedBox(
-                  height: 30,
+                SizedBox(
+                  height: size.height * 0.05,
                 ),
-                signInBtn(context),
+                signInBtn(size, context),
               ],
             ),
           ),
         ),
-        const SizedBox(
-          height: 40,
+        SizedBox(
+          height: size.height * 0.05,
         ),
         signInByOtherWay(),
-        const SizedBox(
-          height: 24,
+        SizedBox(
+          height: size.height * 0.03,
         ),
         signUp(context)
       ],
+    );
+  }
+
+  SizedBox header(Size size, BuildContext context) {
+    return SizedBox(
+      width: size.width / 2 - 48,
+      child: FittedBox(
+          child: Text("Welcome Back!",
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w700, fontSize: 25, color: Theme.of(context).colorScheme.onPrimary))),
     );
   }
 
@@ -106,10 +115,7 @@ class _ContentBoxLoginState extends State<ContentBoxLogin> {
     );
   }
 
-  Text header(BuildContext context) =>
-      Text("Welcome Back!", style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w700, fontSize: 25, color: Theme.of(context).colorScheme.onPrimary));
-
-  formLogin(BuildContext context) => Form(
+  formLogin(Size size, BuildContext context) => Form(
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -117,6 +123,7 @@ class _ContentBoxLoginState extends State<ContentBoxLogin> {
             padding: const EdgeInsets.symmetric(horizontal: 18),
             width: double.infinity,
             decoration: const BoxDecoration(color: mainColor, borderRadius: BorderRadius.all(Radius.circular(30))),
+            alignment: Alignment.center,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -129,12 +136,13 @@ class _ContentBoxLoginState extends State<ContentBoxLogin> {
                 ),
                 Expanded(
                   child: TextFormField(
+                    textAlignVertical: TextAlignVertical.center,
                     controller: _emailController,
                     onChanged: (value) {
                       context.read<LoginBLoc>().add(LoginTextChangeEmailEvent(email: _emailController.text));
                     },
                     cursorColor: const Color(0xffFFFFFF),
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15, color: Theme.of(context).colorScheme.onPrimary),
                     decoration: InputDecoration(
                       // contentPadding: const EdgeInsets.only(bottom: 4),
                       fillColor: Theme.of(context).colorScheme.onPrimaryContainer,
@@ -162,16 +170,14 @@ class _ContentBoxLoginState extends State<ContentBoxLogin> {
               if (state is LoginErrorEmailState) {
                 return Text(
                   state.errorEmail,
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        color: Colors.red,
-                      ),
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.red, fontSize: 10),
                 );
               }
               return const SizedBox();
             },
           ),
-          const SizedBox(
-            height: 20,
+          SizedBox(
+            height: size.height * 0.02,
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 18),
@@ -225,9 +231,7 @@ class _ContentBoxLoginState extends State<ContentBoxLogin> {
               if (state is LoginErrorPassState) {
                 return Text(
                   state.errorPass,
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        color: Colors.red,
-                      ),
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.red, fontSize: 10),
                 );
               } else {
                 return const SizedBox();
@@ -295,7 +299,7 @@ class _ContentBoxLoginState extends State<ContentBoxLogin> {
           )
         ],
       );
-  signInBtn(BuildContext context) => BlocBuilder<LoginBLoc, LoginState>(
+  signInBtn(Size size, BuildContext context) => BlocBuilder<LoginBLoc, LoginState>(
         builder: (context, state) {
           bool isValid = context.read<LoginBLoc>().isValidEmail && context.read<LoginBLoc>().isValidPass;
           if (state is LoginLoadingState) {
@@ -307,7 +311,7 @@ class _ContentBoxLoginState extends State<ContentBoxLogin> {
                 isValid ? context.read<LoginBLoc>().add(LoginSubmitEvent(context, email: _emailController.text, password: _passController.text)) : null;
               },
               child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 13),
+                padding: EdgeInsets.symmetric(vertical: size.height * 0.02),
                 width: double.infinity,
                 decoration: BoxDecoration(
                   border: Border.all(color: isValid ? whiteColor : mainColor),

@@ -9,6 +9,7 @@ class BackgroundLogin extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var heigh = size.height;
+
     var width = size.width;
     return Stack(children: [
       Container(

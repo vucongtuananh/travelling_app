@@ -28,7 +28,9 @@ class _TripDetailsState extends State<TripDetails> {
 
   @override
   Widget build(BuildContext context) {
-    var h = MediaQuery.of(context).size.height;
+    var size = MediaQuery.of(context).size;
+    var h = size.height;
+    var w = size.width;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -44,13 +46,13 @@ class _TripDetailsState extends State<TripDetails> {
           const SizedBox(
             height: 20,
           ),
-          content(context)
+          content(context, size)
         ]),
       ),
     );
   }
 
-  Padding content(BuildContext context) {
+  Padding content(BuildContext context, Size size) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
@@ -70,19 +72,20 @@ class _TripDetailsState extends State<TripDetails> {
           const SizedBox(
             height: 25,
           ),
-          bookAndFavorite(context)
+          bookAndFavorite(context, size)
         ],
       ),
     );
   }
 
-  Row bookAndFavorite(BuildContext context) {
+  Row bookAndFavorite(BuildContext context, Size size) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         ContainerButton(
           title: "Booking Now | \$${widget.trip.price}",
           colorContainer: mainColor,
-          paddingHorizontal: 74,
+          paddingHorizontal: size.width * 0.18,
           paddingVertical: 13,
           titleStyle: whiteTextW6Style,
           borderRadius: 20,

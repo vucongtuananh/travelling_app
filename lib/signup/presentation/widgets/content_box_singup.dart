@@ -34,41 +34,34 @@ class _ContentBoxSignUpState extends State<ContentBoxSignUp> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: size.width * 0.5,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: size.width * 0.5,
+          height: size.height * 0.1,
+          child: FittedBox(
             child: Text(
-              "Let’s start your Journey together!",
+              "Let’s start your\nJourney together!",
               style: Theme.of(context).textTheme.titleLarge!.copyWith(color: blackColor, fontSize: 25, fontWeight: FontWeight.w600),
             ),
           ),
-          const SizedBox(
-            height: 20,
-          ),
-
-          Center(child: SizedBox(child: Image.asset("$imagePathLdpi/icon_earth.png"))),
-          const SizedBox(
-            height: 30,
-          ),
-          formSignUp(context),
-          // const SizedBox(
-          //   height: 20,
-          // ),
-          // signInBtn(context),
-          const SizedBox(
-            height: 30,
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          signUpBtn(context),
-          SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
-        ],
-      ),
+        ),
+        SizedBox(
+          height: size.height * 0.02,
+        ),
+        Center(child: SizedBox(width: size.width * 0.5, height: size.height * 0.25, child: Image.asset("$imagePathLdpi/icon_earth.png"))),
+        SizedBox(
+          height: size.height * 0.03,
+        ),
+        formSignUp(context, size),
+        SizedBox(
+          height: size.height * 0.03,
+        ),
+        signUpBtn(context),
+        SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
+      ],
     );
   }
 
@@ -102,7 +95,7 @@ class _ContentBoxSignUpState extends State<ContentBoxSignUp> {
     );
   }
 
-  formSignUp(BuildContext context) {
+  formSignUp(BuildContext context, Size size) {
     return Form(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -124,7 +117,7 @@ class _ContentBoxSignUpState extends State<ContentBoxSignUp> {
               return const SizedBox();
             },
           ),
-          const SizedBox(height: 15),
+          // SizedBox(height: size.height * 0.017),
           emailInput(context),
           const SizedBox(
             height: 5,
@@ -142,9 +135,7 @@ class _ContentBoxSignUpState extends State<ContentBoxSignUp> {
               return const SizedBox();
             },
           ),
-          const SizedBox(
-            height: 15,
-          ),
+          // SizedBox(height: size.height * 0.017),
           passInput(context),
           const SizedBox(
             height: 5,
@@ -162,9 +153,7 @@ class _ContentBoxSignUpState extends State<ContentBoxSignUp> {
               return const SizedBox();
             },
           ),
-          const SizedBox(
-            height: 15,
-          ),
+          // SizedBox(height: size.height * 0.017),
           rePassInput(context),
           const SizedBox(
             height: 5,
