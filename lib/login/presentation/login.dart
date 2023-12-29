@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:travelling_app/login/data/auth/fire_auth.dart';
 import 'package:travelling_app/login/logic/login_bloc.dart';
 import 'package:travelling_app/login/presentation/widgets/background_login.dart';
@@ -23,11 +24,11 @@ class _LoginScreenState extends State<LoginScreen> {
         children: [
           const BackgroundLogin(),
           Positioned(
-              top: MediaQuery.of(context).padding.top + MediaQuery.of(context).size.height * 0.015,
+
               //this widget help me to padding the text a space that equal the heigh of status bar of phone
-              left: 24,
-              right: 24,
-              bottom: 0,
+              left: 24.w,
+              right: 24.w,
+              bottom: 24.h,
               child: BlocProvider(
                   create: (context) => LoginBLoc(
                         auth: Auth(),

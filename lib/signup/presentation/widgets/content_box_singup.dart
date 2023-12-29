@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/color.dart';
 import 'package:travelling_app/signup/logic/sign_up_event.dart';
@@ -32,36 +33,33 @@ class _ContentBoxSignUpState extends State<ContentBoxSignUp> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          width: size.width * 0.5,
-          height: size.height * 0.1,
-          child: FittedBox(
+    return SafeArea(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 218.w,
             child: Text(
               "Let’s start your\nJourney together!",
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(color: blackColor, fontSize: 25, fontWeight: FontWeight.w600),
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(color: blackColor, fontSize: 25.sp, fontWeight: FontWeight.w600),
             ),
           ),
-        ),
-        SizedBox(
-          height: size.height * 0.02,
-        ),
-        Center(child: SizedBox(width: size.width * 0.5, height: size.height * 0.25, child: Image.asset("$imagePathLdpi/icon_earth.png"))),
-        SizedBox(
-          height: size.height * 0.03,
-        ),
-        formSignUp(context, size),
-        SizedBox(
-          height: size.height * 0.03,
-        ),
-        signUpBtn(context),
-        SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
-      ],
+          SizedBox(
+            height: 20.h,
+          ),
+          Center(child: SizedBox(width: 208.w, height: 208.h, child: Image.asset("$imagePathLdpi/icon_earth.png"))),
+          SizedBox(
+            height: 30.h,
+          ),
+          formSignUp(context),
+          SizedBox(
+            height: 30.h,
+          ),
+          signUpBtn(context),
+          SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
+        ],
+      ),
     );
   }
 
@@ -95,15 +93,13 @@ class _ContentBoxSignUpState extends State<ContentBoxSignUp> {
     );
   }
 
-  formSignUp(BuildContext context, Size size) {
+  formSignUp(BuildContext context) {
     return Form(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           nameInput(context),
-          const SizedBox(
-            height: 5,
-          ),
+
           BlocBuilder<SignUpBloc, SignUpState>(
             builder: (context, state) {
               if (state is SignUpErrorNameState) {
@@ -117,11 +113,9 @@ class _ContentBoxSignUpState extends State<ContentBoxSignUp> {
               return const SizedBox();
             },
           ),
-          // SizedBox(height: size.height * 0.017),
+          SizedBox(height: 20.h),
           emailInput(context),
-          const SizedBox(
-            height: 5,
-          ),
+
           BlocBuilder<SignUpBloc, SignUpState>(
             builder: (context, state) {
               if (state is SignUpErrorEmailState) {
@@ -136,10 +130,9 @@ class _ContentBoxSignUpState extends State<ContentBoxSignUp> {
             },
           ),
           // SizedBox(height: size.height * 0.017),
+          SizedBox(height: 20.h),
           passInput(context),
-          const SizedBox(
-            height: 5,
-          ),
+
           BlocBuilder<SignUpBloc, SignUpState>(
             builder: (context, state) {
               if (state is SignUpErrorPassState) {
@@ -154,9 +147,11 @@ class _ContentBoxSignUpState extends State<ContentBoxSignUp> {
             },
           ),
           // SizedBox(height: size.height * 0.017),
+          SizedBox(height: 20.h),
+
           rePassInput(context),
-          const SizedBox(
-            height: 5,
+          SizedBox(
+            height: 5.h,
           ),
           BlocBuilder<SignUpBloc, SignUpState>(
             builder: (context, state) {
@@ -182,7 +177,7 @@ class _ContentBoxSignUpState extends State<ContentBoxSignUp> {
       controller: _rePassController,
       style: Theme.of(context).textTheme.bodySmall!.copyWith(
             color: mainColor,
-            fontSize: 15,
+            fontSize: 15.sp,
             fontWeight: FontWeight.w400,
           ),
       onChanged: (value) {
@@ -199,7 +194,7 @@ class _ContentBoxSignUpState extends State<ContentBoxSignUp> {
               child: _isShowPass ? const Icon(Icons.visibility_off_rounded) : const Icon(Icons.visibility_rounded)),
           label: Text(
             "Password",
-            style: Theme.of(context).textTheme.bodySmall!.copyWith(color: grayColor, fontSize: 12, fontWeight: FontWeight.w700),
+            style: Theme.of(context).textTheme.bodySmall!.copyWith(color: grayColor, fontSize: 12.sp, fontWeight: FontWeight.w700),
           )),
     );
   }
@@ -209,7 +204,7 @@ class _ContentBoxSignUpState extends State<ContentBoxSignUp> {
       controller: _passController,
       style: Theme.of(context).textTheme.bodySmall!.copyWith(
             color: mainColor,
-            fontSize: 15,
+            fontSize: 15.sp,
             fontWeight: FontWeight.w400,
           ),
       onChanged: (value) {
@@ -226,7 +221,7 @@ class _ContentBoxSignUpState extends State<ContentBoxSignUp> {
               child: _isShowPass ? const Icon(Icons.visibility_off_rounded) : const Icon(Icons.visibility_rounded)),
           label: Text(
             "Password",
-            style: Theme.of(context).textTheme.bodySmall!.copyWith(color: grayColor, fontSize: 12, fontWeight: FontWeight.w700),
+            style: Theme.of(context).textTheme.bodySmall!.copyWith(color: grayColor, fontSize: 12.sp, fontWeight: FontWeight.w700),
           )),
     );
   }
@@ -241,20 +236,24 @@ class _ContentBoxSignUpState extends State<ContentBoxSignUp> {
       },
       style: Theme.of(context).textTheme.bodySmall!.copyWith(
             color: blackColor,
-            fontSize: 15,
+            fontSize: 15.sp,
             fontWeight: FontWeight.w400,
           ),
       decoration: InputDecoration(
           label: Text(
             "Email",
-            style: Theme.of(context).textTheme.bodySmall!.copyWith(color: grayColor, fontSize: 12, fontWeight: FontWeight.w700),
+            style: Theme.of(context).textTheme.bodySmall!.copyWith(color: grayColor, fontSize: 12.sp, fontWeight: FontWeight.w700),
           ),
           suffixIcon: BlocBuilder<SignUpBloc, SignUpState>(
             builder: (context, state) {
               if (context.read<SignUpBloc>().isValidEmail) {
-                return Image.asset(
-                  "$imagePathLdpi/check.png",
-                  color: mainColor,
+                return SizedBox(
+                  width: 20.w,
+                  height: 20.h,
+                  child: Image.asset(
+                    "$imagePathLdpi/check.png",
+                    color: mainColor,
+                  ),
                 );
               }
               return const SizedBox();
@@ -271,20 +270,24 @@ class _ContentBoxSignUpState extends State<ContentBoxSignUp> {
       },
       style: Theme.of(context).textTheme.bodySmall!.copyWith(
             color: blackColor,
-            fontSize: 15,
+            fontSize: 15.sp,
             fontWeight: FontWeight.w400,
           ),
       decoration: InputDecoration(
           label: Text(
             "Username",
-            style: Theme.of(context).textTheme.bodySmall!.copyWith(color: grayColor, fontSize: 12, fontWeight: FontWeight.w700),
+            style: Theme.of(context).textTheme.bodySmall!.copyWith(color: grayColor, fontSize: 12.sp, fontWeight: FontWeight.w700),
           ),
           suffixIcon: BlocBuilder<SignUpBloc, SignUpState>(
             builder: (context, state) {
               if (context.read<SignUpBloc>().isValidName) {
-                return Image.asset(
-                  "$imagePathLdpi/check.png",
-                  color: mainColor,
+                return SizedBox(
+                  width: 20.w,
+                  height: 20.h,
+                  child: Image.asset(
+                    "$imagePathLdpi/check.png",
+                    color: mainColor,
+                  ),
                 );
               }
               return const SizedBox();
