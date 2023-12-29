@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:travelling_app/login/data/auth/fire_auth.dart';
 import 'package:travelling_app/signup/logic/signup_bloc.dart';
 import 'package:travelling_app/signup/presentation/widgets/background_signup.dart';
@@ -21,9 +22,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: Stack(children: [
           const BackgroundSingUp(),
           Positioned(
-            left: 24,
-            right: 24,
-            top: MediaQuery.of(context).padding.top,
+            left: 24.w,
+            right: 24.w,
+            top: 13.h,
             child: BlocProvider(
                 create: (context) => SignUpBloc(
                       auth: Auth(),
