@@ -1,14 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/color.dart';
-import 'package:travelling_app/home/data/fire_store/fire_store.dart';
-import 'package:travelling_app/home/logic/home_bloc/home_bloc.dart';
-import 'package:travelling_app/home/logic/home_bloc/home_event.dart';
-import 'package:travelling_app/home/logic/home_bloc/home_state.dart';
-import 'package:travelling_app/home/presentation/trip_details.dart';
+import 'package:travelling_app/home/logic/favorite_trip_bloc/favorite_trip_bloc.dart';
+import 'package:travelling_app/home/logic/favorite_trip_bloc/favorite_trip_event.dart';
+import 'package:travelling_app/home/logic/favorite_trip_bloc/favorite_trip_state.dart';
+import 'package:travelling_app/home/presentation/widgets/trip_details.dart';
 import '../../data/models/trip.dart';
 
 class TopTrip extends StatefulWidget {
@@ -23,30 +22,29 @@ class TopTrip extends StatefulWidget {
 class _TopTripState extends State<TopTrip> {
   @override
   void didChangeDependencies() {
-    context.read<HomeBloc>().add(HomeReStartEvent(trip: widget.trip));
+    context.read<FavoriteTripBloc>().add(TripFavoriteRestartEvent(trip: widget.trip));
     super.didChangeDependencies();
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    var w = MediaQuery.of(context).size.width;
-    final FireStoreData _fireStoreData = FireStoreData(currentUserId: FirebaseAuth.instance.currentUser!.uid);
     return GestureDetector(
       child: Container(
-        width: w / 2.5,
-        padding: const EdgeInsets.only(top: 2, left: 2, right: 2, bottom: 9),
+        width: 150.w,
+        height: 212.h,
+        padding: EdgeInsets.only(top: 2.h, left: 2.w, right: 2.w, bottom: 9.h),
         margin: const EdgeInsets.only(right: 13),
         decoration: BoxDecoration(color: whiteColor, borderRadius: BorderRadius.circular(20), boxShadow: const [
           BoxShadow(
             color: grayBlurColor,
             blurRadius: 1,
             spreadRadius: 1,
+            offset: Offset(1, 1),
           )
         ]),
         child: Column(
@@ -56,8 +54,8 @@ class _TopTripState extends State<TopTrip> {
               tag: widget.trip.id,
               child: Container(
                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                height: 150,
+                padding: EdgeInsets.symmetric(horizontal: 5.w),
+                height: 110.h,
                 clipBehavior: Clip.hardEdge,
                 child: Image.network(
                   widget.trip.imgPath,
@@ -65,20 +63,20 @@ class _TopTripState extends State<TopTrip> {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 8,
+            SizedBox(
+              height: 8.h,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5),
+              padding: EdgeInsets.symmetric(horizontal: 5.w),
               child: Column(
                 children: [
                   firstLine(context),
-                  const SizedBox(
-                    height: 12,
+                  SizedBox(
+                    height: 12.h,
                   ),
                   secondLine(context),
-                  const SizedBox(
-                    height: 18,
+                  SizedBox(
+                    height: 18.h,
                   ),
                   thirdLine(context)
                 ],
@@ -92,7 +90,7 @@ class _TopTripState extends State<TopTrip> {
             context,
             MaterialPageRoute(
               builder: (_) => BlocProvider.value(
-                value: BlocProvider.of<HomeBloc>(context),
+                value: BlocProvider.of<FavoriteTripBloc>(context),
                 child: TripDetails(trip: widget.trip),
               ),
             ));
@@ -107,29 +105,29 @@ class _TopTripState extends State<TopTrip> {
         RichText(
           text: TextSpan(
               text: "\$${widget.trip.price}",
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: const Color(0xff008FA0), fontSize: 12, fontWeight: FontWeight.w400),
-              children: [TextSpan(text: " /Visit", style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: blackColor, fontSize: 12, fontWeight: FontWeight.w400))]),
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: const Color(0xff008FA0), fontSize: 12.sp, fontWeight: FontWeight.w400),
+              children: [TextSpan(text: " /Visit", style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: blackColor, fontSize: 12.sp, fontWeight: FontWeight.w400))]),
         ),
-        BlocBuilder<HomeBloc, HomeState>(
+        BlocBuilder<FavoriteTripBloc, TripFavoriteState>(
           builder: (context, state) {
-            if (state == HomeFavoriteTripState(isFavorite: false, id: widget.trip.id) || state == HomeStartFavoriteTripState(isFavorite: false, id: widget.trip.id)) {
+            if (state == FavoriteTripLoadedState(isFavorite: false, id: widget.trip.id) || state == FavoriteTripCheckState(isFavorite: false, id: widget.trip.id)) {
               return SvgPicture.asset(
                 "$imagePathLdpi/heart_white.svg",
-                width: 10,
-                height: 10,
+                width: 10.w,
+                height: 10.h,
               );
             }
-            if (state == HomeFavoriteTripState(isFavorite: true, id: widget.trip.id) || state == HomeStartFavoriteTripState(isFavorite: true, id: widget.trip.id)) {
+            if (state == FavoriteTripLoadedState(isFavorite: true, id: widget.trip.id) || state == FavoriteTripCheckState(isFavorite: true, id: widget.trip.id)) {
               return SvgPicture.asset(
                 "$imagePathLdpi/heart_icon.svg",
-                width: 10,
-                height: 10,
+                width: 10.w,
+                height: 10.h,
               );
             }
             return SvgPicture.asset(
               "$imagePathLdpi/heart_white.svg",
-              width: 10,
-              height: 10,
+              width: 10.w,
+              height: 10.h,
             );
           },
         )
@@ -142,10 +140,10 @@ class _TopTripState extends State<TopTrip> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         SvgPicture.asset("$imagePathLdpi/location_blur_icon.svg"),
-        const SizedBox(width: 4),
+        SizedBox(width: 4.w),
         Text(
           widget.trip.location,
-          style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: const Color(0xff636363), fontSize: 11, fontWeight: FontWeight.w400),
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: const Color(0xff636363), fontSize: 11.sp, fontWeight: FontWeight.w400),
         )
       ],
     );
@@ -158,14 +156,14 @@ class _TopTripState extends State<TopTrip> {
       children: [
         Text(
           widget.trip.title,
-          style: Theme.of(context).textTheme.titleLarge!.copyWith(color: const Color(0xff1E1E1E), fontSize: 13, fontWeight: FontWeight.w600),
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(color: const Color(0xff1E1E1E), fontSize: 13.sp, fontWeight: FontWeight.w600),
         ),
         Row(
           children: [
             SvgPicture.asset("$imagePathLdpi/star_icon.svg"),
             Text(
               "${widget.trip.rate}",
-              style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: const Color(0xff636363), fontSize: 10, fontWeight: FontWeight.w400),
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: const Color(0xff636363), fontSize: 10.sp, fontWeight: FontWeight.w400),
             )
           ],
         )

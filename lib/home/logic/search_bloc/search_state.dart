@@ -14,5 +14,5 @@ final class SearchLoadingState extends SearchState {}
 final class SearchSuccessState extends SearchState {
   final List<Trip> listTripSearch;
 
-  SearchSuccessState({required this.listTripSearch});
+  const SearchSuccessState({required this.listTripSearch});
 }

@@ -12,7 +12,6 @@ class IsFavorite extends Cubit<List<Trip>> {
     } else {
       emit([...state, trip]);
       isFavorite = true;
-      print(state.first.id);
     }
   }
 }

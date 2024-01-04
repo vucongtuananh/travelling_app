@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travelling_app/firebase_options.dart';
 import 'package:travelling_app/home/data/fire_store/fire_store.dart';
-import 'package:travelling_app/home/logic/home_bloc/home_bloc.dart';
+import 'package:travelling_app/home/logic/favorite_trip_bloc/favorite_trip_bloc.dart';
 import 'package:travelling_app/login/presentation/login.dart';
 import 'package:travelling_app/tab/presentation/tabs.dart';
 
@@ -37,8 +37,8 @@ class MyApp extends StatelessWidget {
               if (snapshot.hasData) {
                 return MultiBlocProvider(providers: [
                   BlocProvider(
-                    create: (_) => HomeBloc(fireStoreData: FireStoreData(currentUserId: FirebaseAuth.instance.currentUser!.uid)),
-                  )
+                    create: (_) => FavoriteTripBloc(fireStoreData: FireStoreData(currentUserId: FirebaseAuth.instance.currentUser!.uid)),
+                  ),
                 ], child: const TabsScreen());
               }
               return const LoginScreen();
