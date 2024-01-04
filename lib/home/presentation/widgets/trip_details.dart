@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/color.dart';
 import 'package:travelling_app/const/fonts.dart';
 import 'package:travelling_app/home/data/models/trip.dart';
-import 'package:travelling_app/home/logic/home_bloc/home_bloc.dart';
-import 'package:travelling_app/home/logic/home_bloc/home_event.dart';
-import 'package:travelling_app/home/logic/home_bloc/home_state.dart';
+import 'package:travelling_app/home/logic/favorite_trip_bloc/favorite_trip_bloc.dart';
+import 'package:travelling_app/home/logic/favorite_trip_bloc/favorite_trip_event.dart';
+import 'package:travelling_app/home/logic/favorite_trip_bloc/favorite_trip_state.dart';
 import 'package:travelling_app/widgets/container_button.dart';
 
 class TripDetails extends StatefulWidget {
@@ -22,105 +23,102 @@ class TripDetails extends StatefulWidget {
 class _TripDetailsState extends State<TripDetails> {
   @override
   void didChangeDependencies() {
-    context.read<HomeBloc>().add(HomeReStartEvent(trip: widget.trip));
+    context.read<FavoriteTripBloc>().add(TripFavoriteRestartEvent(trip: widget.trip));
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    var h = size.height;
-    var w = size.width;
     return Scaffold(
       appBar: AppBar(
         title: Text(
           "Lake View",
-          style: Theme.of(context).textTheme.titleLarge!.copyWith(color: const Color(0xff323232), fontSize: 16, fontWeight: FontWeight.w700),
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(color: const Color(0xff323232), fontSize: 16.sp, fontWeight: FontWeight.w700),
         ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
-        child: Column(children: [
-          img(h),
-          const SizedBox(
-            height: 20,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+          img(),
+          SizedBox(
+            height: 20.h,
           ),
-          content(context, size)
+          content(context)
         ]),
       ),
     );
   }
 
-  Padding content(BuildContext context, Size size) {
+  Padding content(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: EdgeInsets.symmetric(horizontal: 20.w),
       child: Column(
         children: [
           title(context),
-          const SizedBox(
-            height: 16,
+          SizedBox(
+            height: 16.h,
           ),
           location(context),
-          const SizedBox(
-            height: 20,
+          SizedBox(
+            height: 20.h,
           ),
           Text(
             widget.trip.describe,
-            style: grayTextW4Style.copyWith(fontSize: 15),
+            style: grayTextW4Style.copyWith(fontSize: 15.sp),
           ),
-          const SizedBox(
-            height: 25,
+          SizedBox(
+            height: 25.h,
           ),
-          bookAndFavorite(context, size)
+          bookAndFavorite(context)
         ],
       ),
     );
   }
 
-  Row bookAndFavorite(BuildContext context, Size size) {
+  Row bookAndFavorite(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         ContainerButton(
           title: "Booking Now | \$${widget.trip.price}",
           colorContainer: mainColor,
-          paddingHorizontal: size.width * 0.18,
-          paddingVertical: 13,
+          paddingHorizontal: 74.h,
+          paddingVertical: 13.h,
           titleStyle: whiteTextW6Style,
           borderRadius: 20,
-          margin: const EdgeInsets.only(bottom: 100),
+          margin: EdgeInsets.only(bottom: 100.h),
         ),
-        const SizedBox(
-          width: 5,
+        SizedBox(
+          width: 5.w,
         ),
 
         // var isFavorite = state.contains(trip);
         GestureDetector(onTap: () {
-          context.read<HomeBloc>().state is HomeLoadingState ? null : context.read<HomeBloc>().add(HomeMakeFavoriteTripEvent(trip: widget.trip));
-        }, child: BlocBuilder<HomeBloc, HomeState>(
+          context.read<FavoriteTripBloc>().state is FavoriteTripLoadingState ? null : context.read<FavoriteTripBloc>().add(FavoriteTripMarkEvent(trip: widget.trip));
+        }, child: BlocBuilder<FavoriteTripBloc, TripFavoriteState>(
           builder: (context, state) {
-            if (state == HomeLoadingState()) {
+            if (state == FavoriteTripLoadingState()) {
               return const CircularProgressIndicator();
             }
-            if (state == HomeFavoriteTripState(isFavorite: false, id: widget.trip.id) || state == HomeStartFavoriteTripState(isFavorite: false, id: widget.trip.id)) {
+            if (state == FavoriteTripLoadedState(isFavorite: false, id: widget.trip.id) || state == FavoriteTripCheckState(isFavorite: false, id: widget.trip.id)) {
               return SvgPicture.asset(
                 "$imagePathLdpi/heart_white.svg",
-                width: 30,
-                height: 30,
+                width: 30.w,
+                height: 30.h,
               );
             }
-            if (state == HomeFavoriteTripState(isFavorite: true, id: widget.trip.id) || state == HomeStartFavoriteTripState(isFavorite: true, id: widget.trip.id)) {
+            if (state == FavoriteTripLoadedState(isFavorite: true, id: widget.trip.id) || state == FavoriteTripCheckState(isFavorite: true, id: widget.trip.id)) {
               return SvgPicture.asset(
                 "$imagePathLdpi/heart_icon.svg",
-                width: 30,
-                height: 30,
+                width: 30.w,
+                height: 30.h,
               );
             }
             return SvgPicture.asset(
               "$imagePathLdpi/heart_white.svg",
-              width: 30,
-              height: 30,
+              width: 30.w,
+              height: 30.h,
             );
           },
         ))
@@ -138,7 +136,7 @@ class _TripDetailsState extends State<TripDetails> {
         ),
         Text(
           widget.trip.location,
-          style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: grayColor, fontSize: 15, fontWeight: FontWeight.w400),
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: grayColor, fontSize: 15.sp, fontWeight: FontWeight.w400),
         )
       ],
     );
@@ -150,14 +148,14 @@ class _TripDetailsState extends State<TripDetails> {
       children: [
         Text(
           widget.trip.title,
-          style: Theme.of(context).textTheme.titleLarge!.copyWith(color: const Color(0xff323232), fontSize: 20, fontWeight: FontWeight.w600),
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(color: const Color(0xff323232), fontSize: 20.sp, fontWeight: FontWeight.w600),
         ),
         Row(
           children: [
             SvgPicture.asset("$imagePathLdpi/star_icon.svg"),
             Text(
               "${widget.trip.rate}",
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(color: const Color(0xff636363), fontSize: 18, fontWeight: FontWeight.w400),
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(color: const Color(0xff636363), fontSize: 18.sp, fontWeight: FontWeight.w400),
             )
           ],
         )
@@ -165,12 +163,16 @@ class _TripDetailsState extends State<TripDetails> {
     );
   }
 
-  Hero img(double h) {
+  Hero img() {
     return Hero(
       tag: widget.trip.id,
-      child: SizedBox(
-        width: double.infinity,
-        height: h / 2,
+      child: Container(
+        width: 344.w,
+        height: 370.h,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        clipBehavior: Clip.hardEdge,
         child: Image.network(
           widget.trip.imgPath,
           fit: BoxFit.cover,

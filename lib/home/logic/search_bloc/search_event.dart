@@ -10,5 +10,5 @@ sealed class SearchEvent extends Equatable {
 }
 
 final class SearchStartEvent extends SearchEvent {
-  SearchStartEvent({required super.input});
+  const SearchStartEvent({required super.input});
 }

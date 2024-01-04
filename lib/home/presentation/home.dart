@@ -1,16 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:travelling_app/bloc/top_trip_bloc.dart';
 import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/color.dart';
 import 'package:travelling_app/home/data/fire_store/fire_store.dart';
 import 'package:travelling_app/home/data/models/trip.dart';
-import 'package:travelling_app/home/logic/home_bloc/home_bloc.dart';
-import 'package:travelling_app/home/logic/home_bloc/home_event.dart';
+import 'package:travelling_app/home/logic/favorite_trip_bloc/favorite_trip_bloc.dart';
+import 'package:travelling_app/home/logic/favorite_trip_bloc/favorite_trip_event.dart';
 import 'package:travelling_app/home/logic/search_bloc/search_bloc.dart';
 import 'package:travelling_app/home/presentation/widgets/group_trips.dart';
+import 'package:travelling_app/home/presentation/widgets/search_screen.dart';
 import 'package:travelling_app/home/presentation/widgets/top_trips.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -24,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   var _currentIndex = 0;
   final FireStoreData _fireStoreData = FireStoreData(currentUserId: FirebaseAuth.instance.currentUser!.uid);
   late List<Trip> _listTrip = [];
-  final TextEditingController _searchController = TextEditingController();
+  final TextEditingController searchController = TextEditingController();
   _getDataTrip() async {
     final listData = await _fireStoreData.getData();
     setState(() {
@@ -33,68 +35,19 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _pullRefresh() async {
-    // await Future.delayed(const Duration(microseconds: 1));
+    await Future.delayed(const Duration(microseconds: 1));
+    for (var i in _listTrip) {
+      if (!mounted) return;
+      context.read<FavoriteTripBloc>().add(TripFavoriteRestartEvent(trip: i));
+    }
   }
-
-  OverlayEntry? _overlayEntry;
 
   @override
   void initState() {
     super.initState();
 
     _getDataTrip();
-    if (_searchController.text.isEmpty) {
-      if (_overlayEntry != null) {
-        _overlayEntry!.remove();
-      }
-    }
-
-    // _overlayEntry = _createOverlayEntry(context: context);
   }
-
-  @override
-  void didChangeDependencies() {
-    // context.read<HomeBloc>().add(HomeReStartEvent(trip: );
-    super.didChangeDependencies();
-  }
-
-  // OverlayEntry _createOverlayEntry({required BuildContext context}) {
-  //   RenderBox renderBox = context.findRenderObject() as RenderBox;
-  //   var size = renderBox.size;
-  //   var offset = renderBox.localToGlobal(Offset.zero);
-
-  //   return OverlayEntry(
-  //     builder: (_) {
-  //       final _searchBloc = context.read<SearchBloc>().state;
-
-  //       if (_searchBloc is SearchSuccessState) {
-  //         return Positioned(
-  //           left: offset.dx,
-  //           top: size.height + 5.0,
-  //           width: size.width,
-  //           child: Material(
-  //             elevation: 1.0,
-  //             child: ListView.builder(
-  //               padding: EdgeInsets.zero,
-  //               shrinkWrap: true,
-  //               itemBuilder: (context, index) => Text(_searchBloc.listTripSearch[index].title),
-  //               itemCount: _searchBloc.listTripSearch.length,
-  //             ),
-  //           ),
-  //         );
-  //       }
-  //       if (_searchBloc is SearchLoadingState) {
-  //         return Positioned(
-  //           left: offset.dx,
-  //           top: size.height + 5.0,
-  //           width: size.width,
-  //           child: const Material(elevation: 1.0, child: Center(child: CircularProgressIndicator())),
-  //         );
-  //       }
-  //       return const SizedBox();
-  //     },
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -102,14 +55,14 @@ class _HomeScreenState extends State<HomeScreen> {
       onRefresh: () => _pullRefresh(),
       child: Scaffold(
         body: Padding(
-          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 20, left: 20, right: 20),
+          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 20.h, left: 20.w, right: 20.w),
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
                 header(context),
-                const SizedBox(
-                  height: 20,
+                SizedBox(
+                  height: 20.h,
                 ),
                 body()
               ],
@@ -123,44 +76,39 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget searchBar(BuildContext context) {
     return Row(
       children: [
-        BlocBuilder<SearchBloc, SearchState>(
-          builder: (context, state) {
-            if (state is SearchSuccessState) {
-              for (var t in state.listTripSearch) {
-                print(t.title);
-              }
-            }
-            return Expanded(
-              // flex: 5,
-              child: Container(
-                height: 45,
-                decoration: BoxDecoration(color: whiteColor, border: Border.all(color: const Color(0xffE9E9E9)), borderRadius: BorderRadius.circular(20)),
-                child: Row(children: [
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  const Icon(Icons.search),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  Expanded(
-                    child: Builder(builder: (context) {
-                      return TextField(
-                        // onTap: () {
-                        //   Overlay.of(context).insert(_overlayEntry!);
-                        // },
-                        onChanged: (value) {
-                          context.read<SearchBloc>().add(SearchStartEvent(input: _searchController.text));
-                        },
-                        controller: _searchController,
-                        decoration: const InputDecoration(border: InputBorder.none, hintText: "Search"),
-                      );
-                    }),
-                  )
-                ]),
+        Expanded(
+          // flex: 5,
+          child: Container(
+            height: 45,
+            decoration: BoxDecoration(color: whiteColor, border: Border.all(color: const Color(0xffE9E9E9)), borderRadius: BorderRadius.circular(20)),
+            child: Row(children: [
+              const SizedBox(
+                width: 15,
               ),
-            );
-          },
+              const Icon(Icons.search),
+              const SizedBox(
+                width: 8,
+              ),
+              Expanded(
+                child: Builder(builder: (context) {
+                  return TextField(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => BlocProvider.value(value: BlocProvider.of<SearchBloc>(context), child: SearchScreen(searchController: searchController))));
+                      // FocusScope.of(context).unfocus();
+                    },
+                    onChanged: (value) {
+                      context.read<SearchBloc>().add(SearchStartEvent(input: searchController.text));
+                    },
+                    controller: searchController,
+                    decoration: const InputDecoration(border: InputBorder.none, hintText: "Search"),
+                  );
+                }),
+              )
+            ]),
+          ),
         ),
         const SizedBox(
           width: 5,
@@ -186,18 +134,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Text(
                     "Location",
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: grayColor, fontSize: 16, fontWeight: FontWeight.w400),
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: grayColor, fontSize: 16.sp, fontWeight: FontWeight.w400),
                   ),
                   GestureDetector(
                     child: Row(
                       children: [
                         SvgPicture.asset("$imagePathLdpi/location_icon.svg"),
-                        const SizedBox(
-                          width: 2,
+                        SizedBox(
+                          width: 2.w,
                         ),
                         Text(
                           "New York, USA",
-                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: blackColor, fontSize: 16, fontWeight: FontWeight.w600),
+                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: blackColor, fontSize: 16.sp, fontWeight: FontWeight.w600),
                         ),
                         SvgPicture.asset("$imagePathLdpi/drop_arrow.svg"),
                       ],
@@ -208,50 +156,22 @@ class _HomeScreenState extends State<HomeScreen> {
               SvgPicture.asset('$imagePathLdpi/notify_icon.svg')
             ],
           ),
-          const SizedBox(
-            height: 20,
+          SizedBox(
+            height: 20.h,
           ),
           searchBar(context),
-          SizedBox(
-            width: 250,
-            height: 250,
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  width: 250,
-                  height: 250,
-                  color: Colors.white,
-                ),
-                Container(
-                  padding: const EdgeInsets.all(5.0),
-                  alignment: Alignment.bottomCenter,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: <Color>[Colors.black.withAlpha(0), Colors.black12, Colors.black45],
-                    ),
-                  ),
-                  child: const Text(
-                    'Foreground Text',
-                    style: TextStyle(color: Colors.white, fontSize: 20.0),
-                  ),
-                ),
-              ],
-            ),
-          )
         ],
       );
   Widget body() {
     return Column(
       children: [
         categoryMenu(),
-        const SizedBox(
-          height: 30,
+        SizedBox(
+          height: 30.h,
         ),
         topTrip(),
-        const SizedBox(
-          height: 30,
+        SizedBox(
+          height: 30.h,
         ),
         groupTrip(),
       ],
@@ -300,19 +220,19 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Text(
               "Categories",
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(color: blackColor, fontSize: 16, fontWeight: FontWeight.w700),
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(color: blackColor, fontSize: 16.sp, fontWeight: FontWeight.w700),
             ),
             Text(
               "See All",
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: const Color(0xffA2A2A2), fontSize: 14, fontWeight: FontWeight.w400),
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: const Color(0xffA2A2A2), fontSize: 14.sp, fontWeight: FontWeight.w400),
             )
           ],
         ),
-        const SizedBox(
-          height: 20,
+        SizedBox(
+          height: 20.h,
         ),
         SizedBox(
-            height: 40,
+            height: 40.h,
             child: ListView(
               padding: EdgeInsets.zero,
               scrollDirection: Axis.horizontal,
@@ -393,25 +313,25 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Text(
               "Top Trips",
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(color: blackColor, fontSize: 16, fontWeight: FontWeight.w700),
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(color: blackColor, fontSize: 16.sp, fontWeight: FontWeight.w700),
             ),
             Text(
               "See All",
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: const Color(0xffA2A2A2), fontSize: 14, fontWeight: FontWeight.w400),
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: const Color(0xffA2A2A2), fontSize: 14.sp, fontWeight: FontWeight.w400),
             )
           ],
         ),
-        const SizedBox(
-          height: 25,
+        SizedBox(
+          height: 25.h,
         ),
-        ConstrainedBox(
-          constraints: const BoxConstraints(maxHeight: 250, minHeight: 100),
+        SizedBox(
+          height: 215.h,
           child: ListView.builder(
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
-              return BlocProvider(
-                create: (context) => HomeBloc(fireStoreData: _fireStoreData),
+              return BlocProvider.value(
+                value: FavoriteTripBloc(fireStoreData: _fireStoreData),
                 child: TopTrip(trip: _listTrip[index]),
               );
             },
@@ -431,16 +351,16 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Text(
               "Group Trips",
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(color: blackColor, fontSize: 16, fontWeight: FontWeight.w700),
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(color: blackColor, fontSize: 16.sp, fontWeight: FontWeight.w700),
             ),
             Text(
               "See All",
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: const Color(0xffA2A2A2), fontSize: 14, fontWeight: FontWeight.w400),
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: const Color(0xffA2A2A2), fontSize: 14.sp, fontWeight: FontWeight.w400),
             )
           ],
         ),
-        const SizedBox(
-          height: 24,
+        SizedBox(
+          height: 24.h,
         ),
         GroupTripCard(groupTrip: listGroupTrips[0])
       ],

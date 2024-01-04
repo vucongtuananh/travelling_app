@@ -1,10 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/color.dart';
-import 'package:travelling_app/home/data/fire_store/fire_store.dart';
 import 'package:travelling_app/explore/presentation/explore.dart';
 import 'package:travelling_app/favorite/presentation/favorite.dart';
 import 'package:travelling_app/home/logic/search_bloc/search_bloc.dart';
@@ -18,8 +16,6 @@ class TabsScreen extends StatefulWidget {
   @override
   State<TabsScreen> createState() => _TabsScreenState();
 }
-
-final FireStoreData _fireStoreData = FireStoreData(currentUserId: FirebaseAuth.instance.currentUser!.uid);
 
 class _TabsScreenState extends State<TabsScreen> {
   int _currentIndex = 0;
@@ -38,8 +34,9 @@ class _TabsScreenState extends State<TabsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // body: IndexedStack(index: _currentIndex, children: _pages),
-        body: _pages[_currentIndex],
+        // resizeToAvoidBottomInset: false,
+        body: IndexedStack(index: _currentIndex, children: _pages),
+        // body: _pages[_currentIndex],
         bottomNavigationBar: Container(
           height: 60,
           decoration: const BoxDecoration(
