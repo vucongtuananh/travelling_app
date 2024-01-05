@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:travelling_app/const/color.dart';
+import 'package:travelling_app/home/logic/favorite_trip_bloc/favorite_trip_bloc.dart';
 import 'package:travelling_app/home/logic/search_bloc/search_bloc.dart';
 import 'package:travelling_app/home/presentation/widgets/trip_details.dart';
 
@@ -58,6 +59,11 @@ class SearchScreen extends StatelessWidget {
                   }
                   if (state is SearchSuccessState) {
                     final trips = state.listTripSearch;
+                    if (trips.isEmpty) {
+                      return const SizedBox(
+                        child: Text("There's no trip matched!!"),
+                      );
+                    }
                     return ListView.builder(
                       shrinkWrap: true,
                       itemBuilder: (context, index) => Card(
@@ -68,7 +74,7 @@ class SearchScreen extends StatelessWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (_) => BlocProvider.value(value: BlocProvider.of<SearchBloc>(context), child: TripDetails(trip: trips[index])),
+                                  builder: (_) => BlocProvider.value(value: BlocProvider.of<FavoriteTripBloc>(context), child: TripDetails(trip: trips[index])),
                                 ));
                           },
                         ),
@@ -76,7 +82,9 @@ class SearchScreen extends StatelessWidget {
                       itemCount: trips.length,
                     );
                   }
-                  return const SizedBox();
+                  return const SizedBox(
+                      // child: Text("There's no trip matched!!"),
+                      );
                 },
               )
             ],
