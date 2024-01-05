@@ -93,11 +93,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Builder(builder: (context) {
                   return TextField(
                     onTap: () {
+                      FocusScope.of(context).unfocus();
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (_) => BlocProvider.value(value: BlocProvider.of<SearchBloc>(context), child: SearchScreen(searchController: searchController))));
-                      // FocusScope.of(context).unfocus();
                     },
                     onChanged: (value) {
                       context.read<SearchBloc>().add(SearchStartEvent(input: searchController.text));

@@ -24,8 +24,6 @@ class _LoginScreenState extends State<LoginScreen> {
         children: [
           const BackgroundLogin(),
           Positioned(
-
-              //this widget help me to padding the text a space that equal the heigh of status bar of phone
               left: 24.w,
               right: 24.w,
               bottom: 24.h,

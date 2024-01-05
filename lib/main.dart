@@ -22,29 +22,32 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      builder: (context, child) => MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Travelling app',
-        theme: ThemeData(
-          textTheme: GoogleFonts.interTextTheme(),
-          colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff008FA0)),
-          useMaterial3: true,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => FavoriteTripBloc(fireStoreData: FireStoreData(currentUserId: FirebaseAuth.instance.currentUser!.uid)),
         ),
-        home: StreamBuilder(
-            stream: FirebaseAuth.instance.authStateChanges(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return MultiBlocProvider(providers: [
-                  BlocProvider(
-                    create: (_) => FavoriteTripBloc(fireStoreData: FireStoreData(currentUserId: FirebaseAuth.instance.currentUser!.uid)),
-                  ),
-                ], child: const TabsScreen());
-              }
-              return const LoginScreen();
-            }),
+      ],
+      child: ScreenUtilInit(
+        builder: (context, child) => MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Travelling app',
+          theme: ThemeData(
+            textTheme: GoogleFonts.interTextTheme(),
+            colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff008FA0)),
+            useMaterial3: true,
+          ),
+          home: StreamBuilder(
+              stream: FirebaseAuth.instance.authStateChanges(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return const TabsScreen();
+                }
+                return const LoginScreen();
+              }),
+        ),
+        designSize: const Size(390, 844),
       ),
-      designSize: const Size(390, 844),
     );
   }
 }
