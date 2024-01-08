@@ -1,15 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/color.dart';
 import 'package:travelling_app/const/fonts.dart';
+import 'package:travelling_app/message/logic/bloc/search_user_bloc.dart';
 import 'package:travelling_app/message/presention/widgets/chat_screen.dart';
+import 'package:travelling_app/message/presention/widgets/search_user.dart';
+import 'package:travelling_app/own/data/user_model.dart';
 
-class MessageScreen extends StatelessWidget {
+class MessageScreen extends StatefulWidget {
   const MessageScreen({super.key});
+
+  @override
+  State<MessageScreen> createState() => _MessageScreenState();
+}
+
+class _MessageScreenState extends State<MessageScreen> {
+  final TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -72,10 +83,22 @@ class MessageScreen extends StatelessWidget {
           SizedBox(
             width: 5.w,
           ),
-          const Expanded(
-            child: TextField(
-              decoration: InputDecoration(hintText: "Search", border: InputBorder.none),
-            ),
+          Expanded(
+            child: Builder(builder: (context) {
+              return TextField(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => BlocProvider.value(
+                          value: BlocProvider.of<SearchUserBloc>(context),
+                          child: SearchUser(searchController: searchController),
+                        ),
+                      ));
+                },
+                decoration: InputDecoration(hintText: "Search", hintStyle: grayBlurText.copyWith(fontSize: 15.sp), border: InputBorder.none),
+              );
+            }),
           ),
         ],
       ),
@@ -103,25 +126,27 @@ class MessageScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildUserListItem(DocumentSnapshot documentSnapshot, BuildContext context) {
-    Map<String, dynamic> data = documentSnapshot.data()! as Map<String, dynamic>;
-    if (FirebaseAuth.instance.currentUser!.email != data['email']) {
+  Widget _buildUserListItem(QueryDocumentSnapshot documentSnapshot, BuildContext context) {
+    documentSnapshot as QueryDocumentSnapshot<Map<String, dynamic>>;
+    final data = UserModel.fromFireStore(documentSnapshot);
+    if (FirebaseAuth.instance.currentUser!.email != data.email) {
       return Card(
         child: ListTile(
           onTap: () {
+            FocusScope.of(context).unfocus();
             Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => ChatScreen(
-                    receiverEmail: data['email'],
-                    receiverName: data['user-name'],
+                    receiverEmail: data.email,
+                    receiverName: data.name,
                   ),
                 ));
           },
-          title: Text(data['user-name']),
+          title: Text(data.name),
           leading: CircleAvatar(
             backgroundColor: mainColor,
-            child: FittedBox(child: Text(data['email'])),
+            child: FittedBox(child: Text(data.email)),
           ),
         ),
       );

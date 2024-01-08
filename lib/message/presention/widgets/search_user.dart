@@ -1,13 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:travelling_app/const/color.dart';
 import 'package:travelling_app/home/logic/favorite_trip_bloc/favorite_trip_bloc.dart';
 import 'package:travelling_app/home/logic/search_bloc/search_bloc.dart';
-import 'package:travelling_app/home/presentation/widgets/trip_details.dart';
+import 'package:travelling_app/message/logic/bloc/search_user_bloc.dart';
+import 'package:travelling_app/message/presention/widgets/chat_screen.dart';
 
-class SearchScreen extends StatelessWidget {
-  const SearchScreen({super.key, required this.searchController});
+class SearchUser extends StatelessWidget {
+  const SearchUser({super.key, required this.searchController});
   final TextEditingController searchController;
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,7 @@ class SearchScreen extends StatelessWidget {
                     child: Builder(builder: (context) {
                       return TextField(
                         onChanged: (value) {
-                          context.read<SearchBloc>().add(SearchStartEvent(input: searchController.text));
+                          context.read<SearchUserBloc>().add(StartSearchUserEvent(input: searchController.text));
                         },
                         controller: searchController,
                         decoration: const InputDecoration(
@@ -50,37 +52,35 @@ class SearchScreen extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              BlocBuilder<SearchBloc, SearchState>(
+              BlocBuilder<SearchUserBloc, SearchUserState>(
                 builder: (context, state) {
-                  if (state is SearchLoadingState) {
+                  if (state is SearchUserLoading) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
                   }
-                  if (state is SearchSuccessState) {
-                    final trips = state.listTripSearch;
-                    if (trips.isEmpty) {
+                  if (state is SearchUserLoaded) {
+                    final users = state.listUser;
+                    if (users.isEmpty) {
                       return const SizedBox(
-                        child: Text("There's no trip matched!!"),
+                        child: Text("There's no user matched!!"),
                       );
                     }
                     return ListView.builder(
                       shrinkWrap: true,
                       itemBuilder: (context, index) => Card(
-                        child: ListTile(
-                          leading: CircleAvatar(radius: 10.r, backgroundImage: NetworkImage(trips[index].imgPath)),
-                          title: Text(trips[index].title),
-                          onTap: () {
-                            // Navigator.pop(context);
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => BlocProvider.value(value: BlocProvider.of<FavoriteTripBloc>(context), child: TripDetails(trip: trips[index])),
-                                ));
-                          },
-                        ),
+                        child: users[index].email == FirebaseAuth.instance.currentUser!.email
+                            ? const SizedBox()
+                            : ListTile(
+                                leading: CircleAvatar(radius: 10.r, child: Text(users[index].email)),
+                                title: Text(users[index].name),
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  Navigator.push(context, MaterialPageRoute(builder: (_) => ChatScreen(receiverEmail: users[index].email, receiverName: users[index].name)));
+                                },
+                              ),
                       ),
-                      itemCount: trips.length,
+                      itemCount: users.length,
                     );
                   }
                   return const SizedBox(

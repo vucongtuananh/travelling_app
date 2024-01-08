@@ -15,6 +15,14 @@ class UserModel extends Equatable {
       name: snapshot.data()!['user-name'],
     );
   }
+  factory UserModel.fromFireStoreWithQuery(
+    QueryDocumentSnapshot<Map<String, dynamic>> snapshot,
+  ) {
+    return UserModel(
+      email: snapshot.data()['email'],
+      name: snapshot.data()['user-name'],
+    );
+  }
 
   @override
   List<Object?> get props => [name, email];

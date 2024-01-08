@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/color.dart';
 import 'package:travelling_app/const/fonts.dart';
@@ -18,7 +19,7 @@ class LocationContainer extends StatelessWidget {
           height: MediaQuery.of(context).size.height,
         ),
         Container(
-          padding: const EdgeInsets.only(left: 20, right: 20),
+          padding: EdgeInsets.only(left: 20.w, right: 20.w),
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height / 2,
           decoration: BoxDecoration(
@@ -31,18 +32,18 @@ class LocationContainer extends StatelessWidget {
           ),
         ),
         Positioned(
-          top: 20,
-          left: 30,
+          top: 20.h,
+          left: 30.w,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 location.title,
-                style: whiteTextW6Style.copyWith(fontSize: 20),
+                style: whiteTextW6Style.copyWith(fontSize: 20.sp),
               ),
               Text(
                 "${location.distance}km",
-                style: whiteTextW6Style.copyWith(fontSize: 15),
+                style: whiteTextW6Style.copyWith(fontSize: 15.sp),
               )
             ],
           ),
@@ -55,16 +56,16 @@ class LocationContainer extends StatelessWidget {
     return Container(
       decoration:
           BoxDecoration(borderRadius: BorderRadius.circular(20), gradient: const LinearGradient(colors: linearMainColor, begin: Alignment.topLeft, end: Alignment.bottomRight)),
-      padding: const EdgeInsets.only(top: 12, bottom: 12, right: 18, left: 8),
+      padding: EdgeInsets.only(top: 12.h, bottom: 12.h, right: 18.w, left: 8.w),
       child: Row(
         children: [
-          Image.asset("$imagePathLdpi/send.png"),
-          const SizedBox(
-            width: 5,
+          SizedBox(width: 16.w, height: 16.h, child: Image.asset("$imagePathLdpi/send.png")),
+          SizedBox(
+            width: 5.w,
           ),
           Text(
             "Start",
-            style: whiteTextW4Style.copyWith(fontSize: 13),
+            style: whiteTextW4Style.copyWith(fontSize: 13.sp),
           )
         ],
       ),

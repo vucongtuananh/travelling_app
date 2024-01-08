@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/color.dart';
 import 'package:travelling_app/const/fonts.dart';
 import 'package:travelling_app/home/data/fire_store/fire_store.dart';
@@ -37,8 +40,14 @@ class _OwnDetailScreenState extends State<OwnDetailScreen> {
       appBar: AppBar(
         title: Text(
           "Profile",
-          style: blackTextW6Style.copyWith(fontSize: 24),
+          style: blackTextW7Style.copyWith(fontSize: 36.sp),
         ),
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 30.w),
+            child: SizedBox(width: 18.w, height: 21.h, child: SvgPicture.asset('$imagePathLdpi/notify_icon.svg')),
+          )
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12),

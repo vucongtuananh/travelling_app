@@ -8,6 +8,8 @@ import 'package:travelling_app/explore/presentation/explore.dart';
 import 'package:travelling_app/favorite/presentation/favorite.dart';
 import 'package:travelling_app/home/logic/search_bloc/search_bloc.dart';
 import 'package:travelling_app/home/presentation/home.dart';
+import 'package:travelling_app/message/data/sources/user_service.dart';
+import 'package:travelling_app/message/logic/bloc/search_user_bloc.dart';
 import 'package:travelling_app/message/presention/message_screen.dart';
 import 'package:travelling_app/own/presention/own.dart';
 
@@ -27,7 +29,13 @@ class _TabsScreenState extends State<TabsScreen> {
       )
     ], child: const HomeScreen()),
     const ExploreScreen(),
-    const MessageScreen(),
+    RepositoryProvider(
+      create: (context) => UserService(),
+      child: BlocProvider(
+        create: (context) => SearchUserBloc(userService: UserService()),
+        child: const MessageScreen(),
+      ),
+    ),
     const FavoriteScreen(),
     const OwnDetailScreen()
   ];
