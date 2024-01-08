@@ -15,7 +15,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       final listTrip = await fireStoreData.getData();
       final listData = listTrip.where(
         (trip) {
-          return trip.title[0].toLowerCase() == event.input.trim().toLowerCase() || trip.title.trim().contains(event.input.toLowerCase());
+          return trip.title[0].toLowerCase() == event.input.trim().toLowerCase() || trip.title.trim().toLowerCase().contains(event.input.toLowerCase());
         },
       ).toList();
       emit(SearchSuccessState(listTripSearch: listData));

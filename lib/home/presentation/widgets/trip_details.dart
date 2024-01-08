@@ -99,16 +99,16 @@ class _TripDetailsState extends State<TripDetails> {
         }, child: BlocBuilder<FavoriteTripBloc, TripFavoriteState>(
           builder: (context, state) {
             if (state == FavoriteTripLoadingState()) {
-              return const CircularProgressIndicator();
+              return SizedBox(width: 20.w, height: 20.h, child: const CircularProgressIndicator());
             }
-            if (state == FavoriteTripLoadedState(isFavorite: false, id: widget.trip.id) || state == FavoriteTripCheckState(isFavorite: false, id: widget.trip.id)) {
+            if (state == FavoriteTripLoadedState(isFavorite: false, id: widget.trip.id)) {
               return SvgPicture.asset(
                 "$imagePathLdpi/heart_white.svg",
                 width: 30.w,
                 height: 30.h,
               );
             }
-            if (state == FavoriteTripLoadedState(isFavorite: true, id: widget.trip.id) || state == FavoriteTripCheckState(isFavorite: true, id: widget.trip.id)) {
+            if (state == FavoriteTripLoadedState(isFavorite: true, id: widget.trip.id)) {
               return SvgPicture.asset(
                 "$imagePathLdpi/heart_icon.svg",
                 width: 30.w,

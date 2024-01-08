@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/color.dart';
@@ -25,7 +26,7 @@ class ExploreDetails extends StatelessWidget {
       left: 21,
       right: 21,
       child: Container(
-        padding: const EdgeInsets.only(top: 8, left: 10, right: 10),
+        padding: EdgeInsets.only(top: 8.h, left: 10.w, right: 10.w),
         // width: size.width,
         height: size.height / 2.4,
         decoration: BoxDecoration(
@@ -39,14 +40,14 @@ class ExploreDetails extends StatelessWidget {
             children: [
               Text(
                 location.titleDetail,
-                style: blackTextW6Style.copyWith(fontSize: 20),
+                style: blackTextW6Style.copyWith(fontSize: 20.sp),
               ),
               Row(
                 children: [
                   SvgPicture.asset("$imagePathLdpi/star_icon.svg"),
                   Text(
                     location.rate.toString(),
-                    style: grayTextW4Style.copyWith(fontSize: 13),
+                    style: grayTextW4Style.copyWith(fontSize: 13.sp),
                   )
                 ],
               )
@@ -54,27 +55,27 @@ class ExploreDetails extends StatelessWidget {
           ),
           Text(
             location.describe,
-            style: grayTextW6Style.copyWith(fontSize: 11),
+            style: grayTextW6Style.copyWith(fontSize: 11.sp),
           ),
           const SizedBox(
             height: 30,
           ),
           Row(
             children: [
-              Image.asset("$imagePathMdpi/${location.tourGuide.image}"),
-              const SizedBox(
-                width: 5,
+              SizedBox(width: 25.w, height: 25.h, child: Image.asset("$imagePathMdpi/${location.tourGuide.image}")),
+              SizedBox(
+                width: 5.w,
               ),
               Text(
                 location.tourGuide.name,
-                style: blackTextW6Style.copyWith(color: mainColor, fontSize: 11),
+                style: blackTextW6Style.copyWith(color: mainColor, fontSize: 11.sp),
               ),
-              const SizedBox(
-                width: 20,
+              SizedBox(
+                width: 20.w,
               ),
               Text(
                 location.tourGuide.status,
-                style: grayTextW4Style.copyWith(fontSize: 10),
+                style: grayTextW4Style.copyWith(fontSize: 10.sp),
               )
             ],
           )

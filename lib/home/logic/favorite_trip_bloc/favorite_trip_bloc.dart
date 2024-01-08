@@ -29,7 +29,7 @@ class FavoriteTripBloc extends Bloc<TripFavoriteEvent, TripFavoriteState> {
 
       _isCheckFavorite = await fireStoreData.checkFavoriteTrip(idtrip: event.trip.id);
 
-      emit(FavoriteTripCheckState(
+      emit(FavoriteTripLoadedState(
         isFavorite: _isCheckFavorite,
         id: event.trip.id,
       ));

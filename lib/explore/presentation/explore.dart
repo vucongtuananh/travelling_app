@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:travelling_app/bloc/location_bloc.dart';
 import 'package:travelling_app/const/assets_image.dart';
@@ -22,12 +23,12 @@ class _ExploreScreenState extends State<ExploreScreen> {
       appBar: AppBar(
         title: Text(
           "Explore",
-          style: blackTextW7Style.copyWith(fontSize: 36),
+          style: blackTextW7Style.copyWith(fontSize: 36.sp),
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 30),
-            child: SvgPicture.asset('$imagePathLdpi/notify_icon.svg'),
+            padding: EdgeInsets.only(right: 30.w),
+            child: SizedBox(width: 18.w, height: 21.h, child: SvgPicture.asset('$imagePathLdpi/notify_icon.svg')),
           )
         ],
       ),
@@ -87,16 +88,16 @@ class _ExploreScreenState extends State<ExploreScreen> {
       child: Container(
         decoration:
             BoxDecoration(borderRadius: BorderRadius.circular(20), gradient: const LinearGradient(colors: linearMainColor, begin: Alignment.topLeft, end: Alignment.bottomRight)),
-        padding: const EdgeInsets.only(top: 12, bottom: 12, right: 18, left: 8),
+        padding: EdgeInsets.only(top: 12.h, bottom: 12.h, right: 18.w, left: 8.w),
         child: Row(
           children: [
             Image.asset("$imagePathLdpi/send.png"),
-            const SizedBox(
-              width: 5,
+            SizedBox(
+              width: 5.w,
             ),
             Text(
               "Start",
-              style: whiteTextW4Style.copyWith(fontSize: 13),
+              style: whiteTextW4Style.copyWith(fontSize: 13.sp),
             )
           ],
         ),
@@ -106,7 +107,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
   Widget indicatorPageView(int currentIndex) {
     return Padding(
-      padding: const EdgeInsets.only(left: 20, top: 10, bottom: 18),
+      padding: EdgeInsets.only(left: 20.w, top: 10.h, bottom: 18.h),
       child: Row(
         children: [
           indicatorContainer(0, currentIndex),
@@ -119,8 +120,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
   Widget indicatorContainer(int index, int currentIndex) {
     return Container(
-      margin: const EdgeInsets.only(right: 3),
-      width: index == currentIndex ? 20 : 10,
+      margin: EdgeInsets.only(right: 3.w),
+      width: index == currentIndex ? 20.w : 10.w,
       height: 6,
       decoration: BoxDecoration(
         color: index == currentIndex ? mainColor : grayColor,

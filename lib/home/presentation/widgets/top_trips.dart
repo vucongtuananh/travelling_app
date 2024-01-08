@@ -101,7 +101,7 @@ class _TopTripState extends State<TopTrip> {
         ),
         BlocBuilder<FavoriteTripBloc, TripFavoriteState>(
           builder: (context, state) {
-            if (state == FavoriteTripLoadedState(isFavorite: false, id: widget.trip.id) || state == FavoriteTripCheckState(isFavorite: false, id: widget.trip.id)) {
+            if (state == FavoriteTripLoadedState(isFavorite: false, id: widget.trip.id)) {
               return SizedBox(
                 width: 20.w,
                 height: 17.h,
@@ -112,7 +112,7 @@ class _TopTripState extends State<TopTrip> {
                 ),
               );
             }
-            if (state == FavoriteTripLoadedState(isFavorite: true, id: widget.trip.id) || state == FavoriteTripCheckState(isFavorite: true, id: widget.trip.id)) {
+            if (state == FavoriteTripLoadedState(isFavorite: true, id: widget.trip.id)) {
               return SizedBox(
                 width: 20.w,
                 height: 17.h,
