@@ -33,6 +33,6 @@ class MessageService {
     ids.sort();
     String chatRoomId = ids.join("_");
 
-    return _firestore.collection("chat_room").doc(chatRoomId).collection("message").orderBy('timestamp', descending: false).snapshots();
+    return _firestore.collection("chat_room").doc(chatRoomId).collection("message").orderBy('timestamp', descending: true).snapshots();
   }
 }

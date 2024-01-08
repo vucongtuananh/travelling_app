@@ -14,18 +14,29 @@ class GroupTripCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.only(top: 4.h, left: 4.w, bottom: 3.w),
       decoration: BoxDecoration(
         color: whiteColor,
         borderRadius: BorderRadius.circular(18),
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Image.asset("$imagePathHdpi/group_trip_1.png"),
+          Container(
+              width: 141.w,
+              height: 126.h,
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+              clipBehavior: Clip.hardEdge,
+              child: Image.asset(
+                "$imagePathHdpi/group_trip_1.png",
+                fit: BoxFit.cover,
+              )),
           SizedBox(
             width: 19.w,
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Text(
                 groupTrip.title,

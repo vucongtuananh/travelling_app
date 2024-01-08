@@ -325,9 +325,10 @@ class _HomeScreenState extends State<HomeScreen> {
           height: 25.h,
         ),
         SizedBox(
-          height: 215.h,
+          height: 230.h,
           child: ListView.builder(
-            shrinkWrap: true,
+            // padding: EdgeInsets.symmetric(horizontal: 0),
+            // shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
               return BlocProvider.value(

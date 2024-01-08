@@ -36,17 +36,12 @@ class _TopTripState extends State<TopTrip> {
     return GestureDetector(
       child: Container(
         width: 150.w,
-        height: 212.h,
-        padding: EdgeInsets.only(top: 2.h, left: 2.w, right: 2.w, bottom: 9.h),
-        margin: const EdgeInsets.only(right: 13),
-        decoration: BoxDecoration(color: whiteColor, borderRadius: BorderRadius.circular(20), boxShadow: const [
-          BoxShadow(
-            color: grayBlurColor,
-            blurRadius: 1,
-            spreadRadius: 1,
-            offset: Offset(1, 1),
-          )
-        ]),
+        padding: EdgeInsets.only(top: 4.h, left: 5.w, right: 4.w, bottom: 9.h),
+        margin: EdgeInsets.only(right: 14.w),
+        decoration: BoxDecoration(
+          color: whiteColor,
+          borderRadius: BorderRadius.circular(20),
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -54,7 +49,6 @@ class _TopTripState extends State<TopTrip> {
               tag: widget.trip.id,
               child: Container(
                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
-                padding: EdgeInsets.symmetric(horizontal: 5.w),
                 height: 110.h,
                 clipBehavior: Clip.hardEdge,
                 child: Image.network(
@@ -66,21 +60,18 @@ class _TopTripState extends State<TopTrip> {
             SizedBox(
               height: 8.h,
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 5.w),
-              child: Column(
-                children: [
-                  firstLine(context),
-                  SizedBox(
-                    height: 12.h,
-                  ),
-                  secondLine(context),
-                  SizedBox(
-                    height: 18.h,
-                  ),
-                  thirdLine(context)
-                ],
-              ),
+            Column(
+              children: [
+                firstLine(context),
+                SizedBox(
+                  height: 12.h,
+                ),
+                secondLine(context),
+                SizedBox(
+                  height: 18.h,
+                ),
+                thirdLine(context)
+              ],
             )
           ],
         ),
@@ -111,23 +102,35 @@ class _TopTripState extends State<TopTrip> {
         BlocBuilder<FavoriteTripBloc, TripFavoriteState>(
           builder: (context, state) {
             if (state == FavoriteTripLoadedState(isFavorite: false, id: widget.trip.id) || state == FavoriteTripCheckState(isFavorite: false, id: widget.trip.id)) {
-              return SvgPicture.asset(
-                "$imagePathLdpi/heart_white.svg",
-                width: 10.w,
-                height: 10.h,
+              return SizedBox(
+                width: 20.w,
+                height: 17.h,
+                child: SvgPicture.asset(
+                  "$imagePathLdpi/heart_white.svg",
+                  width: 10.w,
+                  height: 10.h,
+                ),
               );
             }
             if (state == FavoriteTripLoadedState(isFavorite: true, id: widget.trip.id) || state == FavoriteTripCheckState(isFavorite: true, id: widget.trip.id)) {
-              return SvgPicture.asset(
-                "$imagePathLdpi/heart_icon.svg",
-                width: 10.w,
-                height: 10.h,
+              return SizedBox(
+                width: 20.w,
+                height: 17.h,
+                child: SvgPicture.asset(
+                  "$imagePathLdpi/heart_icon.svg",
+                  width: 10.w,
+                  height: 10.h,
+                ),
               );
             }
-            return SvgPicture.asset(
-              "$imagePathLdpi/heart_white.svg",
-              width: 10.w,
-              height: 10.h,
+            return SizedBox(
+              width: 20.w,
+              height: 17.h,
+              child: SvgPicture.asset(
+                "$imagePathLdpi/heart_white.svg",
+                width: 10.w,
+                height: 10.h,
+              ),
             );
           },
         )
@@ -139,7 +142,7 @@ class _TopTripState extends State<TopTrip> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        SvgPicture.asset("$imagePathLdpi/location_blur_icon.svg"),
+        SizedBox(width: 8.7.w, height: 12.2.h, child: SvgPicture.asset("$imagePathLdpi/location_blur_icon.svg")),
         SizedBox(width: 4.w),
         Text(
           widget.trip.location,
@@ -160,7 +163,7 @@ class _TopTripState extends State<TopTrip> {
         ),
         Row(
           children: [
-            SvgPicture.asset("$imagePathLdpi/star_icon.svg"),
+            SizedBox(width: 12.w, height: 12.h, child: SvgPicture.asset("$imagePathLdpi/star_icon.svg")),
             Text(
               "${widget.trip.rate}",
               style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: const Color(0xff636363), fontSize: 10.sp, fontWeight: FontWeight.w400),

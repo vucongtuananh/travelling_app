@@ -1,12 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:travelling_app/const/color.dart';
 import 'package:travelling_app/message/data/message_service.dart';
+import 'package:travelling_app/message/data/models/message.dart';
 
 class ChatScreen extends StatefulWidget {
   final String receiverEmail;
-
-  const ChatScreen({super.key, required this.receiverEmail});
+  final String receiverName;
+  const ChatScreen({super.key, required this.receiverEmail, required this.receiverName});
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -27,14 +30,20 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Column(
-        children: [
-          Expanded(
-            child: _buildMessageList(),
-          ),
-          _buildMessageInput(),
-        ],
+      appBar: AppBar(
+        title: Text(widget.receiverName),
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: EdgeInsetsDirectional.symmetric(horizontal: 10.w),
+        child: Column(
+          children: [
+            Expanded(
+              child: _buildMessageList(),
+            ),
+            _buildMessageInput(),
+          ],
+        ),
       ),
     );
   }
@@ -45,21 +54,41 @@ class _ChatScreenState extends State<ChatScreen> {
         Expanded(
             child: TextField(
           controller: _chatController,
+          decoration: const InputDecoration(
+            hintText: "Type a message",
+            border: OutlineInputBorder(),
+          ),
         )),
         IconButton(onPressed: sendMessage, icon: const Icon(Icons.send)),
       ],
     );
   }
 
-  Widget _buildMessageListItem(DocumentSnapshot documentSnapshot) {
-    Map<String, dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
-    var alignment = (data['senderId'] == _firebaseAuth.currentUser!.uid) ? Alignment.centerRight : Alignment.centerLeft;
+  Widget _buildMessageListItem(QueryDocumentSnapshot documentSnapshot) {
+    var e = documentSnapshot as QueryDocumentSnapshot<Map<String, dynamic>>;
+    var data = Message.fromFirestore(e);
+    var isMe = (data.senderId == _firebaseAuth.currentUser!.uid);
+    var alignment = isMe ? Alignment.centerRight : Alignment.centerLeft;
     return Container(
+      // color: Colors.amber,
       alignment: alignment,
-      child: Column(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Text(data['senderEmail']),
-          Text(data['message']),
+          isMe
+              ? const SizedBox()
+              : CircleAvatar(
+                  backgroundColor: mainColor,
+                  child: FittedBox(child: Text(data.senderEmail)),
+                ),
+          Container(
+              padding: const EdgeInsets.all(10),
+              margin: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: isMe ? mainColor : grayBlurColor,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(data.message)),
         ],
       ),
     );
@@ -73,9 +102,12 @@ class _ChatScreenState extends State<ChatScreen> {
           return Text("Error : ${snapshot.error}");
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         }
         return ListView(
+          reverse: true,
           children: snapshot.data!.docs.map((e) => _buildMessageListItem(e)).toList(),
         );
       },
