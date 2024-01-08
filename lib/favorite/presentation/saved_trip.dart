@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/color.dart';
@@ -27,8 +28,8 @@ class SavedTrip extends StatelessWidget {
             ));
       },
       child: Container(
-        padding: const EdgeInsets.only(top: 5, left: 5, bottom: 7, right: 16),
-        margin: const EdgeInsets.only(bottom: 10),
+        padding: EdgeInsets.only(top: 5.h, left: 5.w, bottom: 7.h, right: 16.w),
+        margin: EdgeInsets.only(bottom: 10.h),
         decoration:
             BoxDecoration(color: whiteColor, borderRadius: BorderRadius.circular(20), boxShadow: const [BoxShadow(color: grayBlurColor, offset: Offset(0, 0), blurRadius: 0.2)]),
         child: Row(
@@ -37,15 +38,15 @@ class SavedTrip extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                 ),
-                width: 141,
-                height: 90,
+                width: 140.w,
+                height: 90.h,
                 clipBehavior: Clip.hardEdge,
                 child: Image.network(
                   trip.imgPath,
                   fit: BoxFit.cover,
                 )),
-            const SizedBox(
-              width: 15,
+            SizedBox(
+              width: 15.w,
             ),
             Expanded(
               child: Column(
@@ -53,24 +54,24 @@ class SavedTrip extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   firstLine(context),
-                  const SizedBox(
-                    height: 5,
+                  SizedBox(
+                    height: 5.h,
                   ),
                   secondLine(context),
-                  const SizedBox(
-                    height: 5,
+                  SizedBox(
+                    height: 5.h,
                   ),
                   thirdLine(context),
-                  const SizedBox(
-                    height: 5,
+                  SizedBox(
+                    height: 5.h,
                   ),
                   ContainerButton(
                       title: "Book Now",
                       colorContainer: mainColor,
-                      paddingHorizontal: 20,
-                      titleStyle: whiteTextW4Style.copyWith(fontSize: 9),
+                      paddingHorizontal: 20.w,
+                      titleStyle: whiteTextW4Style.copyWith(fontSize: 9.sp),
                       borderRadius: 20,
-                      paddingVertical: 4,
+                      paddingVertical: 4.h,
                       margin: const EdgeInsets.all(0))
                 ],
               ),
@@ -87,14 +88,18 @@ class SavedTrip extends StatelessWidget {
       children: [
         Text(
           trip.title,
-          style: Theme.of(context).textTheme.titleLarge!.copyWith(color: const Color(0xff1E1E1E), fontSize: 13, fontWeight: FontWeight.w600),
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(color: const Color(0xff1E1E1E), fontSize: 13.sp, fontWeight: FontWeight.w600),
         ),
         Row(
           children: [
-            SvgPicture.asset("$imagePathLdpi/star_icon.svg"),
+            SizedBox(
+              width: 12.w,
+              height: 12.h,
+              child: SvgPicture.asset("$imagePathLdpi/star_icon.svg"),
+            ),
             Text(
               "${trip.rate}",
-              style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: const Color(0xff636363), fontSize: 10, fontWeight: FontWeight.w400),
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: const Color(0xff636363), fontSize: 10.sp, fontWeight: FontWeight.w400),
             )
           ],
         )
@@ -106,11 +111,11 @@ class SavedTrip extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        SvgPicture.asset("$imagePathLdpi/location_blur_icon.svg"),
-        const SizedBox(width: 4),
+        SizedBox(width: 8.w, height: 12.h, child: SvgPicture.asset("$imagePathLdpi/location_blur_icon.svg")),
+        SizedBox(width: 4.w),
         Text(
           trip.location,
-          style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: const Color(0xff636363), fontSize: 11, fontWeight: FontWeight.w400),
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: const Color(0xff636363), fontSize: 11.sp, fontWeight: FontWeight.w400),
         )
       ],
     );
@@ -123,8 +128,8 @@ class SavedTrip extends StatelessWidget {
         RichText(
           text: TextSpan(
               text: "\$${trip.price}",
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: const Color(0xff008FA0), fontSize: 12, fontWeight: FontWeight.w400),
-              children: [TextSpan(text: " /Visit", style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: blackColor, fontSize: 12, fontWeight: FontWeight.w400))]),
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: const Color(0xff008FA0), fontSize: 12.sp, fontWeight: FontWeight.w400),
+              children: [TextSpan(text: " /Visit", style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: blackColor, fontSize: 12.sp, fontWeight: FontWeight.w400))]),
         ),
       ],
     );

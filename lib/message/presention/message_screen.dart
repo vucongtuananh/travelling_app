@@ -14,18 +14,22 @@ class MessageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   leading: SvgPicture.asset("$imagePathLdpi/back_arrow.svg"),
-      //   actions: [SvgPicture.asset("$imagePathLdpi/take_note_icon.svg")],
-      // ),
+      appBar: AppBar(
+        title: Text(
+          "Chat Room",
+          style: blackTextW7Style.copyWith(fontSize: 36),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 30),
+            child: SvgPicture.asset('$imagePathLdpi/notify_icon.svg'),
+          )
+        ],
+      ),
       body: Padding(
         padding: EdgeInsets.only(right: 24.w, left: 24.w, top: MediaQuery.of(context).padding.top),
         child: Column(
           children: [
-            header(),
-            SizedBox(
-              height: 20.h,
-            ),
             searchBar(),
             SizedBox(
               height: 20.h,
@@ -53,6 +57,7 @@ class MessageScreen extends StatelessWidget {
 
   Widget searchBar() {
     return Container(
+      height: 45.h,
       padding: EdgeInsets.only(
         left: 17.w,
       ),
@@ -109,13 +114,14 @@ class MessageScreen extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) => ChatScreen(
                     receiverEmail: data['email'],
+                    receiverName: data['user-name'],
                   ),
                 ));
           },
-          title: Text(data['email']),
+          title: Text(data['user-name']),
           leading: CircleAvatar(
             backgroundColor: mainColor,
-            child: FittedBox(child: Text(data['user-name'])),
+            child: FittedBox(child: Text(data['email'])),
           ),
         ),
       );

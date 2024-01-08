@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/color.dart';
@@ -7,7 +8,7 @@ import 'package:travelling_app/explore/presentation/explore.dart';
 import 'package:travelling_app/favorite/presentation/favorite.dart';
 import 'package:travelling_app/home/logic/search_bloc/search_bloc.dart';
 import 'package:travelling_app/home/presentation/home.dart';
-import 'package:travelling_app/message/presention/message.dart';
+import 'package:travelling_app/message/presention/message_screen.dart';
 import 'package:travelling_app/own/presention/own.dart';
 
 class TabsScreen extends StatefulWidget {
@@ -88,23 +89,30 @@ class _TabsScreenState extends State<TabsScreen> {
   }
 
   Widget iconButtonBottom(int currentIndex, String icon) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 18),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SvgPicture.asset(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(
+          width: 22.7.w,
+          height: 22.7.h,
+          child: SvgPicture.asset(
             "$imagePathLdpi/$icon",
             color: _currentIndex == currentIndex ? mainColor : grayColor,
             width: 22,
             height: 22,
           ),
-          const SizedBox(
-            height: 5,
-          ),
-          _currentIndex == currentIndex ? SvgPicture.asset("$imagePathLdpi/dot_icon.svg") : const SizedBox()
-        ],
-      ),
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        _currentIndex == currentIndex
+            ? SizedBox(
+                width: 8.w,
+                height: 8.h,
+                child: SvgPicture.asset("$imagePathLdpi/dot_icon.svg"),
+              )
+            : const SizedBox()
+      ],
     );
   }
 }

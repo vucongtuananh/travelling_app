@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/fonts.dart';
 import 'package:travelling_app/favorite/presentation/saved_trip.dart';
 import 'package:travelling_app/home/data/fire_store/fire_store.dart';
@@ -36,30 +39,35 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       onRefresh: () => _getFavoriteTrip(),
       child: Scaffold(
           appBar: AppBar(
-            centerTitle: true,
             title: Text(
               "Saved Trips",
-              style: grayTextW6Style.copyWith(color: const Color(0xff323232), fontSize: 16),
+              style: blackTextW7Style.copyWith(fontSize: 36.sp),
             ),
+            actions: [
+              Padding(
+                padding: EdgeInsets.only(right: 30.w),
+                child: SvgPicture.asset('$imagePathLdpi/notify_icon.svg'),
+              )
+            ],
           ),
           body: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: ConstrainedBox(
                 constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    const SizedBox(
-                      height: 30,
+                    SizedBox(
+                      height: 30.h,
                     ),
                     Text(
                       "Events",
-                      style: blackTextW6Style.copyWith(fontSize: 16),
+                      style: blackTextW6Style.copyWith(fontSize: 16.sp),
                     ),
-                    const SizedBox(
-                      height: 20,
+                    SizedBox(
+                      height: 20.h,
                     ),
                     isBlank
                         ? const Center(child: Text("There's no saved events !!"))

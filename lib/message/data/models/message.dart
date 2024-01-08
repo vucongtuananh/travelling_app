@@ -18,4 +18,15 @@ class Message {
       'timestamp': timestamp,
     };
   }
+
+  factory Message.fromFirestore(QueryDocumentSnapshot<Map<String, dynamic>> snapshot) {
+    final data = snapshot.data();
+    return Message(
+      senderId: data['senderId'],
+      senderEmail: data['senderEmail'],
+      receiverEmail: data['receiverEmail'],
+      message: data['message'],
+      timestamp: data['timestamp'],
+    );
+  }
 }
