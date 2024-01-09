@@ -3,14 +3,12 @@
 A new Flutter project.
 
 ## Getting Started
+3 account available : 
+account 1 :  +email : a@1.com
+            +password : 111111
 
-This project is a starting point for a Flutter application.
+account 2 : +email : a@2.com
+            +password : 11111111
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+account 3 : +email : a@3.com
+            +pass : 111111
