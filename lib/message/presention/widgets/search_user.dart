@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:travelling_app/const/color.dart';
-import 'package:travelling_app/home/logic/favorite_trip_bloc/favorite_trip_bloc.dart';
-import 'package:travelling_app/home/logic/search_bloc/search_bloc.dart';
 import 'package:travelling_app/message/logic/bloc/search_user_bloc.dart';
 import 'package:travelling_app/message/presention/widgets/chat_screen.dart';
 

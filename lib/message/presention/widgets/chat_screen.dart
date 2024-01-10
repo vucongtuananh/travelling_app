@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:travelling_app/const/color.dart';
@@ -25,6 +26,20 @@ class _ChatScreenState extends State<ChatScreen> {
       await _messageService.sendMessage(widget.receiverEmail, _chatController.text);
       _chatController.clear();
     }
+  }
+
+  void setUpfcm() async {
+    final fcm = FirebaseMessaging.instance;
+    await fcm.requestPermission();
+
+    final token = await fcm.getToken();
+    print(token);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setUpfcm();
   }
 
   @override
