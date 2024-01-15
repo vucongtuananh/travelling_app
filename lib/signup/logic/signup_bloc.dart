@@ -16,7 +16,6 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   bool isValidRePass = false;
   bool _isError = false;
   final Auth auth;
-
   SignUpBloc({
     required this.auth,
   }) : super(SignUpInitialState()) {
@@ -107,7 +106,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       }
       if (!_isError) {
         final fireStoreData = FireStoreData(currentUserId: auth.currentUser!.uid);
-        await fireStoreData.postUser(name: event.name, email: event.email, password: event.pass);
+        await fireStoreData.postUser(name: event.name, email: event.email, password: event.pass, uid: auth.currentUser!.uid);
 
         await fireStoreData.postData(
           id1: "1",

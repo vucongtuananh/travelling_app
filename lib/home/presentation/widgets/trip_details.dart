@@ -23,7 +23,7 @@ class TripDetails extends StatefulWidget {
 class _TripDetailsState extends State<TripDetails> {
   @override
   void didChangeDependencies() {
-    context.read<FavoriteTripBloc>().add(TripFavoriteRestartEvent(trip: widget.trip));
+    // context.read<FavoriteTripBloc>().add(TripFavoriteRestartEvent(trip: widget.trip));
     super.didChangeDependencies();
   }
 
@@ -95,31 +95,29 @@ class _TripDetailsState extends State<TripDetails> {
 
         // var isFavorite = state.contains(trip);
         GestureDetector(onTap: () {
-          context.read<FavoriteTripBloc>().state is FavoriteTripLoadingState ? null : context.read<FavoriteTripBloc>().add(FavoriteTripMarkEvent(trip: widget.trip));
+          context.read<FavoriteTripBloc>().state is FavoriteTripLoadingState
+              ? null
+              : context.read<FavoriteTripBloc>().add(widget.trip.isFavorite ? FavoriteTripRemove(trip: widget.trip) : FavoriteTripAdd(trip: widget.trip));
         }, child: BlocBuilder<FavoriteTripBloc, TripFavoriteState>(
           builder: (context, state) {
             if (state == FavoriteTripLoadingState()) {
               return SizedBox(width: 20.w, height: 20.h, child: const CircularProgressIndicator());
             }
-            if (state == FavoriteTripLoadedState(isFavorite: false, id: widget.trip.id)) {
+            if (state == UnfavoriteTripState(trip: widget.trip) || !widget.trip.isFavorite) {
               return SvgPicture.asset(
                 "$imagePathLdpi/heart_white.svg",
                 width: 30.w,
                 height: 30.h,
               );
             }
-            if (state == FavoriteTripLoadedState(isFavorite: true, id: widget.trip.id)) {
+            if (state == FavoriteTripState(trip: widget.trip) || widget.trip.isFavorite) {
               return SvgPicture.asset(
                 "$imagePathLdpi/heart_icon.svg",
                 width: 30.w,
                 height: 30.h,
               );
             }
-            return SvgPicture.asset(
-              "$imagePathLdpi/heart_white.svg",
-              width: 30.w,
-              height: 30.h,
-            );
+            return const SizedBox();
           },
         ))
       ],

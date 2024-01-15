@@ -1,29 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:equatable/equatable.dart';
 
-class UserModel extends Equatable {
-  final String name;
-  final String email;
 
-  const UserModel({required this.email, required this.name});
+// class UserModel extends Equatable {
+//   final String name;
+//   final String email;
 
-  factory UserModel.fromFireStore(
-    DocumentSnapshot<Map<String, dynamic>> snapshot,
-  ) {
-    return UserModel(
-      email: snapshot.data()!['email'],
-      name: snapshot.data()!['user-name'],
-    );
-  }
-  factory UserModel.fromFireStoreWithQuery(
-    QueryDocumentSnapshot<Map<String, dynamic>> snapshot,
-  ) {
-    return UserModel(
-      email: snapshot.data()['email'],
-      name: snapshot.data()['user-name'],
-    );
-  }
+//   const UserModel({required this.email, required this.name});
 
-  @override
-  List<Object?> get props => [name, email];
-}
+//   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(email: json['email'], name: json['user-name']);
+
+//   @override
+//   List<Object?> get props => [name, email];
+// }

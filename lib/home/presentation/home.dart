@@ -101,6 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     onChanged: (value) {
                       context.read<SearchBloc>().add(SearchStartEvent(input: searchController.text));
+                      print(value);
                     },
                     controller: searchController,
                     decoration: const InputDecoration(border: InputBorder.none, hintText: "Search"),
@@ -331,10 +332,7 @@ class _HomeScreenState extends State<HomeScreen> {
             // shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
-              return BlocProvider.value(
-                value: FavoriteTripBloc(fireStoreData: _fireStoreData),
-                child: TopTrip(trip: _listTrip[index]),
-              );
+              return TopTrip(trip: _listTrip[index]);
             },
             itemCount: _listTrip.length,
           ),

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -120,7 +121,7 @@ class GroupTripCard extends StatelessWidget {
     );
   }
 
-  Widget listUser(List<User> users, BuildContext context) {
+  Widget listUser(List<UserModel> users, BuildContext context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width / 7,
         height: 15,

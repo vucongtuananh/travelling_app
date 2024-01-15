@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:travelling_app/home/data/models/trip.dart';
-import 'package:travelling_app/own/data/user_model.dart';
+import 'package:travelling_app/signup/data/models/user.dart';
 
 final firebaseStorage = FirebaseFirestore.instance;
 
@@ -8,8 +8,14 @@ class FireStoreData {
   final String currentUserId;
   FireStoreData({required this.currentUserId});
 
-  postUser({required String name, required String email, required String password}) async {
-    await firebaseStorage.collection("user").doc(currentUserId).set({"user-name": name, "email": email, "password": password});
+  postUser({required String name, required String email, required String password, required String uid}) async {
+    UserModel user = UserModel(
+      email: email,
+      uid: uid,
+      name: name,
+      pass: password,
+    );
+    await firebaseStorage.collection("user").doc(currentUserId).set(user.toJson());
   }
 
   postData({
@@ -21,16 +27,19 @@ class FireStoreData {
     required String title,
     required String id1,
   }) async {
-    await firebaseStorage.collection("user").doc(currentUserId).collection("trip").add({
-      "describe": describe,
-      "img": img,
-      "location": location,
-      "price": price,
-      "rate": rate,
-      "title": title,
-      "isFavorite": false,
-      "id": id1,
-    });
+    Trip trip = Trip(
+      isFavorite: false,
+      imgPath: img,
+      title: title,
+      rate: rate,
+      location: location,
+      price: price,
+      describe: describe,
+      id: id1,
+    );
+    await firebaseStorage.collection("user").doc(currentUserId).collection("trip").doc(id1).set(
+          trip.toFirestore(),
+        );
   }
 
   Future<List<Trip>> getData() async {
@@ -67,6 +76,10 @@ class FireStoreData {
     }
   }
 
+  Future<void> updateFavoriteTripStatus({required String id, required Map<String, dynamic> data}) async {
+    await firebaseStorage.collection("user").doc(currentUserId).collection("trip").doc(id).update(data);
+  }
+
   Future<bool> checkFavoriteTrip({required String idtrip}) async {
     final dataFromFavoriteList = await firebaseStorage.collection("user").doc(currentUserId).collection("favorite").doc(idtrip).get();
     if (dataFromFavoriteList.exists) {
@@ -89,7 +102,7 @@ class FireStoreData {
   Future<UserModel?> getUserInfor() async {
     late UserModel user;
     await firebaseStorage.collection("user").doc(currentUserId).get().then((value) {
-      user = UserModel.fromFireStore(value);
+      user = UserModel.fromJson(value.data()!);
     });
     return user;
   }

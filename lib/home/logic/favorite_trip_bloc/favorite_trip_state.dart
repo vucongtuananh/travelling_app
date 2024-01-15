@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:travelling_app/home/data/models/trip.dart';
 
 abstract class TripFavoriteState extends Equatable {}
 
@@ -12,12 +13,18 @@ class FavoriteTripLoadingState extends TripFavoriteState {
   List<Object?> get props => [];
 }
 
-class FavoriteTripLoadedState extends TripFavoriteState {
-  final bool isFavorite;
-  final String id;
-  FavoriteTripLoadedState({required this.isFavorite, required this.id});
+class UnfavoriteTripState extends TripFavoriteState {
+  final Trip trip;
+  UnfavoriteTripState({required this.trip});
   @override
-  List<Object?> get props => [isFavorite, id];
+  List<Object?> get props => [];
+}
+
+class FavoriteTripState extends TripFavoriteState {
+  final Trip trip;
+  FavoriteTripState({required this.trip});
+  @override
+  List<Object?> get props => [trip];
 }
 
 class FavoriteTripCheckState extends TripFavoriteState {

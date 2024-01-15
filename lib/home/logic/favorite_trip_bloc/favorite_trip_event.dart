@@ -2,9 +2,15 @@ import 'package:travelling_app/home/data/models/trip.dart';
 
 abstract class TripFavoriteEvent {}
 
-class FavoriteTripMarkEvent extends TripFavoriteEvent {
+class FavoriteTripAdd extends TripFavoriteEvent {
   final Trip trip;
-  FavoriteTripMarkEvent({required this.trip});
+  FavoriteTripAdd({required this.trip});
+}
+
+class FavoriteTripRemove extends TripFavoriteEvent {
+  final Trip trip;
+
+  FavoriteTripRemove({required this.trip});
 }
 
 class TripFavoriteRestartEvent extends TripFavoriteEvent {

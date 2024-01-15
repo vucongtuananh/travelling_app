@@ -54,6 +54,7 @@ class Trip {
       'price': price,
       'title': title,
       'rate': rate,
+      'isFavorite': isFavorite,
     };
   }
 }

@@ -7,7 +7,7 @@ import 'package:travelling_app/const/color.dart';
 import 'package:travelling_app/const/fonts.dart';
 import 'package:travelling_app/home/data/fire_store/fire_store.dart';
 import 'package:travelling_app/login/data/auth/fire_auth.dart';
-import 'package:travelling_app/own/data/user_model.dart';
+import 'package:travelling_app/signup/data/models/user.dart';
 
 class OwnDetailScreen extends StatefulWidget {
   const OwnDetailScreen({super.key});
@@ -17,9 +17,9 @@ class OwnDetailScreen extends StatefulWidget {
 }
 
 class _OwnDetailScreenState extends State<OwnDetailScreen> {
-  Auth _auth = Auth();
-  FireStoreData _fireStoreData = FireStoreData(currentUserId: FirebaseAuth.instance.currentUser!.uid);
-  UserModel _userModel = UserModel(email: "email", name: "name");
+  final Auth _auth = Auth();
+  final FireStoreData _fireStoreData = FireStoreData(currentUserId: FirebaseAuth.instance.currentUser!.uid);
+  UserModel _userModel = UserModel(email: "email", name: "name", uid: FirebaseAuth.instance.currentUser!.uid, pass: '');
   getUserInfor() async {
     final _user = await _fireStoreData.getUserInfor();
     setState(() {

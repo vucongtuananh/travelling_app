@@ -5,7 +5,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/color.dart';
 import 'package:travelling_app/home/logic/favorite_trip_bloc/favorite_trip_bloc.dart';
-import 'package:travelling_app/home/logic/favorite_trip_bloc/favorite_trip_event.dart';
 import 'package:travelling_app/home/logic/favorite_trip_bloc/favorite_trip_state.dart';
 import 'package:travelling_app/home/presentation/widgets/trip_details.dart';
 import '../../data/models/trip.dart';
@@ -22,7 +21,6 @@ class TopTrip extends StatefulWidget {
 class _TopTripState extends State<TopTrip> {
   @override
   void didChangeDependencies() {
-    context.read<FavoriteTripBloc>().add(TripFavoriteRestartEvent(trip: widget.trip));
     super.didChangeDependencies();
   }
 
@@ -101,7 +99,7 @@ class _TopTripState extends State<TopTrip> {
         ),
         BlocBuilder<FavoriteTripBloc, TripFavoriteState>(
           builder: (context, state) {
-            if (state == FavoriteTripLoadedState(isFavorite: false, id: widget.trip.id)) {
+            if (state == UnfavoriteTripState(trip: widget.trip) || !widget.trip.isFavorite) {
               return SizedBox(
                 width: 20.w,
                 height: 17.h,
@@ -112,7 +110,7 @@ class _TopTripState extends State<TopTrip> {
                 ),
               );
             }
-            if (state == FavoriteTripLoadedState(isFavorite: true, id: widget.trip.id)) {
+            if (state == FavoriteTripState(trip: widget.trip) || widget.trip.isFavorite) {
               return SizedBox(
                 width: 20.w,
                 height: 17.h,
@@ -123,15 +121,7 @@ class _TopTripState extends State<TopTrip> {
                 ),
               );
             }
-            return SizedBox(
-              width: 20.w,
-              height: 17.h,
-              child: SvgPicture.asset(
-                "$imagePathLdpi/heart_white.svg",
-                width: 10.w,
-                height: 10.h,
-              ),
-            );
+            return const SizedBox();
           },
         )
       ],

@@ -6,41 +6,29 @@ import 'package:travelling_app/home/logic/favorite_trip_bloc/favorite_trip_state
 
 class FavoriteTripBloc extends Bloc<TripFavoriteEvent, TripFavoriteState> {
   final FireStoreData fireStoreData;
-  late bool _isFavorite;
-  late bool _isCheckFavorite;
+
   List<Trip> listTrip = [];
 
   bool isFavorite = false;
   FavoriteTripBloc({
     required this.fireStoreData,
   }) : super(FavoriteTripInitialState()) {
-    on<FavoriteTripMarkEvent>((event, emit) async {
+    on<FavoriteTripAdd>((event, emit) async {
       emit(FavoriteTripLoadingState());
 
-      _isFavorite = await fireStoreData.toggleFavorite(trip: event.trip);
+      await fireStoreData.updateFavoriteTripStatus(id: event.trip.id, data: {
+        "isFavorite": true,
+      });
 
-      emit(FavoriteTripLoadedState(
-        isFavorite: _isFavorite,
-        id: event.trip.id,
-      ));
+      emit(FavoriteTripState(trip: event.trip));
     });
-    on<TripFavoriteRestartEvent>((event, emit) async {
+    on<FavoriteTripRemove>((event, emit) async {
       emit(FavoriteTripLoadingState());
 
-      _isCheckFavorite = await fireStoreData.checkFavoriteTrip(idtrip: event.trip.id);
-
-      emit(FavoriteTripLoadedState(
-        isFavorite: _isCheckFavorite,
-        id: event.trip.id,
-      ));
+      await fireStoreData.updateFavoriteTripStatus(id: event.trip.id, data: {
+        "isFavorite": false,
+      });
+      emit(UnfavoriteTripState(trip: event.trip));
     });
   }
 }
-
-// class HomeCubit extends Cubit<TripFavoriteState> {
-//   HomeCubit() : super(TripFavoriteState());
-
-//   void onClickFavorite() {
-//     emit(state.copyWith(isFavorite: true));
-//   }
-// }
