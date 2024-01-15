@@ -9,7 +9,6 @@ class Trip {
   final String id;
   final String describe;
   final bool isFavorite;
-
   Trip({
     required this.isFavorite,
     required this.imgPath,
@@ -20,7 +19,6 @@ class Trip {
     required this.describe,
     required this.id,
   });
-
   factory Trip.fromFirestore(
     QueryDocumentSnapshot<Map<String, dynamic>> snapshot,
   ) {
@@ -44,7 +42,6 @@ class Trip {
       title: data['title'],
     );
   }
-
   Map<String, dynamic> toFirestore() {
     return {
       "id": id,
@@ -54,6 +51,7 @@ class Trip {
       'price': price,
       'title': title,
       'rate': rate,
+      'isFavorite': isFavorite,
     };
   }
 }

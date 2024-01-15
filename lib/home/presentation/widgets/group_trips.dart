@@ -9,7 +9,6 @@ import 'package:travelling_app/signup/data/models/user.dart';
 
 class GroupTripCard extends StatelessWidget {
   const GroupTripCard({super.key, required this.groupTrip});
-
   final GroupTrip groupTrip;
   @override
   Widget build(BuildContext context) {
@@ -120,7 +119,7 @@ class GroupTripCard extends StatelessWidget {
     );
   }
 
-  Widget listUser(List<User> users, BuildContext context) {
+  Widget listUser(List<UserModel> users, BuildContext context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width / 7,
         height: 15,

@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:travelling_app/message/data/sources/user_service.dart';
-import 'package:travelling_app/own/data/user_model.dart';
+import 'package:travelling_app/signup/data/models/user.dart';
 
 part 'search_user_event.dart';
 part 'search_user_state.dart';

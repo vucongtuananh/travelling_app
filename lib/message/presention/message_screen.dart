@@ -10,18 +10,16 @@ import 'package:travelling_app/const/fonts.dart';
 import 'package:travelling_app/message/logic/bloc/search_user_bloc.dart';
 import 'package:travelling_app/message/presention/widgets/chat_screen.dart';
 import 'package:travelling_app/message/presention/widgets/search_user.dart';
-import 'package:travelling_app/own/data/user_model.dart';
+import 'package:travelling_app/signup/data/models/user.dart';
 
 class MessageScreen extends StatefulWidget {
   const MessageScreen({super.key});
-
   @override
   State<MessageScreen> createState() => _MessageScreenState();
 }
 
 class _MessageScreenState extends State<MessageScreen> {
   final TextEditingController searchController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -128,17 +126,16 @@ class _MessageScreenState extends State<MessageScreen> {
 
   Widget _buildUserListItem(QueryDocumentSnapshot documentSnapshot, BuildContext context) {
     documentSnapshot as QueryDocumentSnapshot<Map<String, dynamic>>;
-    final data = UserModel.fromFireStore(documentSnapshot);
+    final data = UserModel.fromJson(documentSnapshot.data());
     if (FirebaseAuth.instance.currentUser!.email != data.email) {
       return Card(
         child: ListTile(
           onTap: () {
-            FocusScope.of(context).unfocus();
             Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => ChatScreen(
-                    receiverEmail: data.email,
+                    receiverId: data.uid,
                     receiverName: data.name,
                   ),
                 ));

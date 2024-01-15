@@ -7,32 +7,25 @@ class MessageService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   //send message
-  Future<void> sendMessage(String receiverEmail, String message) async {
+  Future<void> sendMessage(String receiverId, String message) async {
     final String currentUserId = _firebaseAuth.currentUser!.uid;
-    final String currentUserEmail = _firebaseAuth.currentUser!.email.toString();
-    final Timestamp timestamp = Timestamp.now();
+    final DateTime timestamp = DateTime.now();
 
-    Message _newMessage = Message(
-      senderId: currentUserId,
-      senderEmail: currentUserEmail,
-      receiverEmail: receiverEmail,
-      message: message,
-      timestamp: timestamp,
-    );
-    List<String> ids = [currentUserEmail, receiverEmail];
+    Message _newMessage = Message(senderId: currentUserId, receiverId: receiverId, sentTime: timestamp, content: message);
+    List<String> ids = [currentUserId, receiverId];
     ids.sort();
     String chatRoomId = ids.join("_");
     await _firestore.collection("chat_room").doc(chatRoomId).collection("message").add(
-          _newMessage.toMap(),
+          _newMessage.toJson(),
         );
   }
 
   //get message
-  Stream<QuerySnapshot> getMessages(String userEmail, String otherUserEmail) {
-    List<String> ids = [userEmail, otherUserEmail];
+  Stream<QuerySnapshot<Map<String, dynamic>>> getMessages(String userId, String otherUserId) {
+    List<String> ids = [userId, otherUserId];
     ids.sort();
     String chatRoomId = ids.join("_");
 
-    return _firestore.collection("chat_room").doc(chatRoomId).collection("message").orderBy('timestamp', descending: true).snapshots();
+    return _firestore.collection("chat_room").doc(chatRoomId).collection("message").orderBy('sentTime', descending: true).snapshots();
   }
 }
