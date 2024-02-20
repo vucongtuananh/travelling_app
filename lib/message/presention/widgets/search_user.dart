@@ -74,7 +74,14 @@ class SearchUser extends StatelessWidget {
                                 title: Text(users[index].name),
                                 onTap: () {
                                   Navigator.pop(context);
-                                  Navigator.push(context, MaterialPageRoute(builder: (_) => ChatScreen(receiverId: users[index].uid, receiverName: users[index].name)));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) => ChatScreen(
+                                                receiverId: users[index].uid,
+                                                receiverName: users[index].name,
+                                                receiverAvt: users[index].urlAvatar,
+                                              )));
                                 },
                               ),
                       ),

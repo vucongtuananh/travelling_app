@@ -9,12 +9,7 @@ class FireStoreData {
   FireStoreData({required this.currentUserId});
 
   postUser({required String name, required String email, required String password, required String uid}) async {
-    UserModel user = UserModel(
-      email: email,
-      uid: uid,
-      name: name,
-      pass: password,
-    );
+    UserModel user = UserModel(email: email, uid: uid, name: name, pass: password, urlAvatar: '');
     await firebaseStorage.collection("user").doc(currentUserId).set(user.toJson());
   }
 
@@ -96,13 +91,5 @@ class FireStoreData {
       }
     });
     return listData;
-  }
-
-  Future<UserModel?> getUserInfor() async {
-    late UserModel user;
-    await firebaseStorage.collection("user").doc(currentUserId).get().then((value) {
-      user = UserModel.fromJson(value.data()!);
-    });
-    return user;
   }
 }

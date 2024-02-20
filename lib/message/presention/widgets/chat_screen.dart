@@ -9,7 +9,8 @@ import 'package:travelling_app/message/data/models/message.dart';
 class ChatScreen extends StatefulWidget {
   final String receiverId;
   final String receiverName;
-  const ChatScreen({super.key, required this.receiverId, required this.receiverName});
+  final String? receiverAvt;
+  const ChatScreen({super.key, required this.receiverId, required this.receiverName, required this.receiverAvt});
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -36,7 +37,6 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _chatController.dispose();
     super.dispose();
   }
@@ -91,9 +91,20 @@ class _ChatScreenState extends State<ChatScreen> {
         children: [
           isMe
               ? const SizedBox()
-              : CircleAvatar(
-                  backgroundColor: mainColor,
-                  child: FittedBox(child: Text(data.senderId)),
+              : Container(
+                  width: 50.w,
+                  height: 50.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(90),
+                    color: mainColor,
+                  ),
+                  clipBehavior: Clip.hardEdge,
+                  child: widget.receiverAvt == ""
+                      ? const Icon(Icons.person)
+                      : Image.network(
+                          widget.receiverAvt!,
+                          fit: BoxFit.cover,
+                        ),
                 ),
           Container(
               padding: const EdgeInsets.all(10),
@@ -131,7 +142,7 @@ class _ChatScreenState extends State<ChatScreen> {
             children: snapshot.data!.docs.map((e) => _buildMessageListItem(e)).toList(),
           );
         }
-        return Text("Kh co data");
+        return const Text("Kh co data");
       },
     );
   }

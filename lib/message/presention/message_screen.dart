@@ -137,13 +137,25 @@ class _MessageScreenState extends State<MessageScreen> {
                   builder: (context) => ChatScreen(
                     receiverId: data.uid,
                     receiverName: data.name,
+                    receiverAvt: data.urlAvatar,
                   ),
                 ));
           },
           title: Text(data.name),
-          leading: CircleAvatar(
-            backgroundColor: mainColor,
-            child: FittedBox(child: Text(data.email)),
+          leading: Container(
+            width: 50.w,
+            height: 50.h,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(90),
+              color: mainColor,
+            ),
+            clipBehavior: Clip.hardEdge,
+            child: data.urlAvatar == ""
+                ? const Icon(Icons.person)
+                : Image.network(
+                    data.urlAvatar!,
+                    fit: BoxFit.cover,
+                  ),
           ),
         ),
       );
