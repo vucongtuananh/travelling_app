@@ -1,12 +1,14 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:travelling_app/const/assets_image.dart';
 import 'package:travelling_app/const/color.dart';
 import 'package:travelling_app/const/fonts.dart';
-import 'package:travelling_app/home/data/fire_store/fire_store.dart';
 import 'package:travelling_app/login/data/auth/fire_auth.dart';
+import 'package:travelling_app/own/data/user_info_service.dart';
+import 'package:travelling_app/own/logic/bloc/user_info_bloc.dart';
+import 'package:travelling_app/own/presention/user_change_info.dart';
 import 'package:travelling_app/signup/data/models/user.dart';
 
 class OwnDetailScreen extends StatefulWidget {
@@ -18,20 +20,14 @@ class OwnDetailScreen extends StatefulWidget {
 
 class _OwnDetailScreenState extends State<OwnDetailScreen> {
   final Auth _auth = Auth();
-  final FireStoreData _fireStoreData = FireStoreData(currentUserId: FirebaseAuth.instance.currentUser!.uid);
-  UserModel _userModel = UserModel(email: "email", name: "name", uid: FirebaseAuth.instance.currentUser!.uid, pass: '');
-  getUserInfor() async {
-    final _user = await _fireStoreData.getUserInfor();
-    setState(() {
-      _userModel = _user!;
-    });
-  }
+
+  UserInfoBloc userInfoBloc = UserInfoBloc(userInforService: UserInforService());
 
   @override
   void initState() {
     // TODO: implement initState
+    userInfoBloc.add(UserInfoStartEvent());
     super.initState();
-    getUserInfor();
   }
 
   @override
@@ -49,47 +45,95 @@ class _OwnDetailScreenState extends State<OwnDetailScreen> {
           )
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: Center(
-          child: Column(
-            children: [
-              header(),
-              TextButton(
-                  onPressed: () {
-                    _auth.logOut();
-                  },
-                  child: Text("logut"))
-            ],
-          ),
-        ),
+      body: BlocBuilder<UserInfoBloc, UserInfoState>(
+        bloc: userInfoBloc,
+        builder: (context, state) {
+          if (state is UserInfoLoadingState) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (state is UserInfoLoadedSuccess) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Center(
+                child: Column(
+                  children: [
+                    header(state.user),
+                    TextButton.icon(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => UserChangeInfo(
+                                        user: state.user,
+                                        userInfoBloc: userInfoBloc,
+                                      )));
+                        },
+                        icon: Icon(Icons.filter),
+                        label: Text("Chinh sua")),
+                    TextButton(
+                        onPressed: () {
+                          _auth.logOut();
+                        },
+                        child: Text("logut"))
+                  ],
+                ),
+              ),
+            );
+          }
+
+          if (state is UserInfoPickedImage) {
+            return const Text("Bloc recently is PickedImage");
+          }
+          return const Text("Loi cu no roi");
+        },
       ),
     );
   }
 
-  header() {
-    return Row(
+  header(UserModel user) {
+    return Column(
       children: [
         Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          // crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            RichText(
-              text: TextSpan(text: "User Name :\t", style: blackTextW6Style, children: [
-                TextSpan(
-                  text: _userModel.name,
-                  style: grayTextW6Style,
-                )
-              ]),
+            Container(
+              width: 50.w,
+              height: 50.h,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(90),
+                color: mainColor,
+              ),
+              clipBehavior: Clip.hardEdge,
+              child: user.urlAvatar == ""
+                  ? const Icon(Icons.person)
+                  : Image.network(
+                      user.urlAvatar!,
+                      fit: BoxFit.cover,
+                    ),
             ),
-            const SizedBox(
-              height: 10,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "User Name",
+                  style: blackTextW6Style,
+                ),
+                SizedBox(width: 20.w),
+                Text(user.name)
+              ],
             ),
-            RichText(
-              text: TextSpan(text: "Email :\t", style: blackTextW6Style, children: [
-                TextSpan(
-                  text: _userModel.email,
-                )
-              ]),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Email",
+                  style: blackTextW6Style,
+                ),
+                SizedBox(width: 20.w),
+                Text(user.email)
+              ],
             ),
             SizedBox(
               width: 50,
@@ -104,11 +148,6 @@ class _OwnDetailScreenState extends State<OwnDetailScreen> {
             ),
           ],
         ),
-        CircleAvatar(
-          backgroundColor: mainColor,
-          child: Text("Avt"),
-          radius: 20,
-        )
       ],
     );
   }

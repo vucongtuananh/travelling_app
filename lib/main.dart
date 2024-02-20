@@ -9,6 +9,8 @@ import 'package:travelling_app/firebase_options.dart';
 import 'package:travelling_app/home/data/fire_store/fire_store.dart';
 import 'package:travelling_app/home/logic/favorite_trip_bloc/favorite_trip_bloc.dart';
 import 'package:travelling_app/login/presentation/login.dart';
+import 'package:travelling_app/own/data/user_info_service.dart';
+import 'package:travelling_app/own/logic/bloc/user_info_bloc.dart';
 import 'package:travelling_app/tab/presentation/tabs.dart';
 
 @pragma('vm:entry-point')
@@ -38,6 +40,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (_) => FavoriteTripBloc(fireStoreData: FireStoreData(currentUserId: FirebaseAuth.instance.currentUser!.uid)),
         ),
+        BlocProvider(create: (_) => UserInfoBloc(userInforService: UserInforService()))
       ],
       child: ScreenUtilInit(
         builder: (context, child) => MaterialApp(

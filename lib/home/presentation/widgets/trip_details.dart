@@ -81,6 +81,7 @@ class _TripDetailsState extends State<TripDetails> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         ContainerButton(
+          onPress: () {},
           title: "Booking Now | \$${widget.trip.price}",
           colorContainer: mainColor,
           paddingHorizontal: 74.h,
