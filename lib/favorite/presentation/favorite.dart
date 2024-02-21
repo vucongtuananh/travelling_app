@@ -43,12 +43,12 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
               "Saved Trips",
               style: blackTextW7Style.copyWith(fontSize: 36.sp),
             ),
-            actions: [
-              Padding(
-                padding: EdgeInsets.only(right: 30.w),
-                child: SvgPicture.asset('$imagePathLdpi/notify_icon.svg'),
-              )
-            ],
+            // actions: [
+            //   Padding(
+            //     padding: EdgeInsets.only(right: 30.w),
+            //     child: SvgPicture.asset('$imagePathLdpi/notify_icon.svg'),
+            //   )
+            // ],
           ),
           body: SingleChildScrollView(
             child: Padding(

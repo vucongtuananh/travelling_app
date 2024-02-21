@@ -25,12 +25,12 @@ class _ExploreScreenState extends State<ExploreScreen> {
           "Explore",
           style: blackTextW7Style.copyWith(fontSize: 36.sp),
         ),
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 30.w),
-            child: SizedBox(width: 18.w, height: 21.h, child: SvgPicture.asset('$imagePathLdpi/notify_icon.svg')),
-          )
-        ],
+        // actions: [
+        //   Padding(
+        //     padding: EdgeInsets.only(right: 30.w),
+        //     child: SizedBox(width: 18.w, height: 21.h, child: SvgPicture.asset('$imagePathLdpi/notify_icon.svg')),
+        //   )
+        // ],
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),

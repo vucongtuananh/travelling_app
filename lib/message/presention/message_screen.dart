@@ -28,12 +28,12 @@ class _MessageScreenState extends State<MessageScreen> {
           "Chat Room",
           style: blackTextW7Style.copyWith(fontSize: 36),
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 30),
-            child: SvgPicture.asset('$imagePathLdpi/notify_icon.svg'),
-          )
-        ],
+        // actions: [
+        //   Padding(
+        //     padding: const EdgeInsets.only(right: 30),
+        //     child: SvgPicture.asset('$imagePathLdpi/notify_icon.svg'),
+        //   )
+        // ],
       ),
       body: Padding(
         padding: EdgeInsets.only(right: 24.w, left: 24.w, top: MediaQuery.of(context).padding.top),

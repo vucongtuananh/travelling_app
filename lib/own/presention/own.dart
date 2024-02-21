@@ -38,12 +38,12 @@ class _OwnDetailScreenState extends State<OwnDetailScreen> {
           "Profile",
           style: blackTextW7Style.copyWith(fontSize: 36.sp),
         ),
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 30.w),
-            child: SizedBox(width: 18.w, height: 21.h, child: SvgPicture.asset('$imagePathLdpi/notify_icon.svg')),
-          )
-        ],
+        // actions: [
+        //   Padding(
+        //     padding: EdgeInsets.only(right: 30.w),
+        //     child: SizedBox(width: 18.w, height: 21.h, child: SvgPicture.asset('$imagePathLdpi/notify_icon.svg')),
+        //   )
+        // ],
       ),
       body: BlocBuilder<UserInfoBloc, UserInfoState>(
         bloc: userInfoBloc,
