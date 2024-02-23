@@ -21,18 +21,24 @@ class _ChatScreenState extends State<ChatScreen> {
   final MessageService _messageService = MessageService();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
+  late final Stream<QuerySnapshot<Map<String, dynamic>>>? stream;
+
   void sendMessage(BuildContext context) async {
-    if (_chatController.text.isNotEmpty) {
-      await _messageService.sendMessage(widget.receiverId, _chatController.text);
+    final message = _chatController.text;
+    if (message.trim().isNotEmpty) {
       _chatController.clear();
       FocusScope.of(context).unfocus();
+      await _messageService.sendMessage(widget.receiverId, message);
     }
-    FocusScope.of(context).unfocus();
   }
 
   @override
   void initState() {
     super.initState();
+    stream = _messageService.getMessages(
+      _firebaseAuth.currentUser!.uid.toString(),
+      widget.receiverId,
+    );
   }
 
   @override
@@ -122,10 +128,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Widget _buildMessageList() {
     return StreamBuilder(
-      stream: _messageService.getMessages(
-        _firebaseAuth.currentUser!.uid.toString(),
-        widget.receiverId,
-      ),
+      stream: stream,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Text("Error : ${snapshot.error}");
