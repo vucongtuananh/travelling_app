@@ -1,26 +1,33 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:travelling_app/const/color.dart';
-import 'package:travelling_app/message/data/message_service.dart';
+import 'package:travelling_app/message/data/sources/message_service.dart';
 import 'package:travelling_app/message/data/models/message.dart';
+import 'package:travelling_app/message/data/sources/notification_service.dart';
+import 'package:travelling_app/own/data/user_info_service.dart';
+import 'package:travelling_app/signup/data/models/user.dart';
 
 class ChatScreen extends StatefulWidget {
-  final String receiverId;
-  final String receiverName;
-  final String? receiverAvt;
-  const ChatScreen({super.key, required this.receiverId, required this.receiverName, required this.receiverAvt});
+  final UserModel receiver;
+  const ChatScreen({
+    super.key,
+    required this.receiver,
+  });
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  UserInforService _inforService = UserInforService();
+  late final UserModel currentUser;
   final TextEditingController _chatController = TextEditingController();
   final MessageService _messageService = MessageService();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-
+  final NotificationService _notificationService = NotificationService();
   late final Stream<QuerySnapshot<Map<String, dynamic>>>? stream;
 
   void sendMessage(BuildContext context) async {
@@ -28,17 +35,28 @@ class _ChatScreenState extends State<ChatScreen> {
     if (message.trim().isNotEmpty) {
       _chatController.clear();
       FocusScope.of(context).unfocus();
-      await _messageService.sendMessage(widget.receiverId, message);
+      await _messageService.sendMessage(widget.receiver.uid, message).then((value) => _notificationService.sendPushNotify(
+            msg: message,
+            receiver: widget.receiver,
+            sender: currentUser,
+          ));
     }
+  }
+
+  getCurrentUser() async {
+    currentUser = await _inforService.getUserInfor();
   }
 
   @override
   void initState() {
     super.initState();
+
     stream = _messageService.getMessages(
       _firebaseAuth.currentUser!.uid.toString(),
-      widget.receiverId,
+      widget.receiver.uid,
     );
+    // _notificationService.receiveNotify();
+    getCurrentUser();
   }
 
   @override
@@ -51,7 +69,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.receiverName),
+        title: Text(widget.receiver.name),
         centerTitle: true,
       ),
       body: Padding(
@@ -105,10 +123,10 @@ class _ChatScreenState extends State<ChatScreen> {
                     color: mainColor,
                   ),
                   clipBehavior: Clip.hardEdge,
-                  child: widget.receiverAvt == ""
+                  child: widget.receiver.urlAvatar == ""
                       ? const Icon(Icons.person)
                       : Image.network(
-                          widget.receiverAvt!,
+                          widget.receiver.urlAvatar!,
                           fit: BoxFit.cover,
                         ),
                 ),

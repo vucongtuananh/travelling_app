@@ -9,7 +9,7 @@ class FireStoreData {
   FireStoreData({required this.currentUserId});
 
   postUser({required String name, required String email, required String password, required String uid}) async {
-    UserModel user = UserModel(email: email, uid: uid, name: name, pass: password, urlAvatar: '');
+    UserModel user = UserModel(email: email, uid: uid, name: name, pass: password, urlAvatar: '', deviceToken: '');
     await firebaseStorage.collection("user").doc(currentUserId).set(user.toJson());
   }
 

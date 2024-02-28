@@ -1,7 +1,9 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:travelling_app/home/data/fire_store/fire_store.dart';
 import 'package:travelling_app/login/data/auth/fire_auth.dart';
 import 'package:travelling_app/login/logic/login_event.dart';
 import 'package:travelling_app/login/logic/login_state.dart';
@@ -47,6 +49,12 @@ class LoginBLoc extends Bloc<LoginEvent, LoginState> {
           //   event.email,
           //   event.password,
           // );
+          final deviceToken = await getDeviceToken();
+          firebaseStorage.collection("user").doc(FirebaseAuth.instance.currentUser!.uid).update(
+            {
+              "deviceToken": deviceToken,
+            },
+          );
         } on FirebaseAuthException catch (e) {
           showDialog(
             context: event.context,
@@ -68,4 +76,10 @@ class LoginBLoc extends Bloc<LoginEvent, LoginState> {
       },
     );
   }
+}
+
+Future<String?> getDeviceToken() async {
+  await FirebaseMessaging.instance.requestPermission();
+  final token = await FirebaseMessaging.instance.getToken();
+  return token;
 }

@@ -6,12 +6,14 @@ class UserModel extends Equatable {
   final String uid;
   final String name;
   final String? urlAvatar;
+  final String? deviceToken;
   const UserModel({
     required this.email,
     required this.pass,
     required this.uid,
     required this.name,
     required this.urlAvatar,
+    required this.deviceToken,
   });
 
   Map<String, dynamic> toJson() {
@@ -21,6 +23,7 @@ class UserModel extends Equatable {
       'name': name,
       'password': pass,
       'urlAvatar': urlAvatar,
+      'deviceToken': deviceToken,
     };
   }
 
@@ -30,6 +33,7 @@ class UserModel extends Equatable {
         pass: json['password'],
         uid: json['uid'],
         urlAvatar: json['urlAvatar'],
+        deviceToken: json['deviceToken'] ?? "",
       );
 
   @override
@@ -40,5 +44,6 @@ class UserModel extends Equatable {
         uid,
         name,
         urlAvatar,
+        deviceToken,
       ];
 }

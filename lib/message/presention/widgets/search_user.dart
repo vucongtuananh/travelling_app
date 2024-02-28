@@ -78,9 +78,7 @@ class SearchUser extends StatelessWidget {
                                       context,
                                       MaterialPageRoute(
                                           builder: (_) => ChatScreen(
-                                                receiverId: users[index].uid,
-                                                receiverName: users[index].name,
-                                                receiverAvt: users[index].urlAvatar,
+                                                receiver: users[index],
                                               )));
                                 },
                               ),

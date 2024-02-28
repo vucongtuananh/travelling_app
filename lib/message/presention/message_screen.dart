@@ -135,9 +135,7 @@ class _MessageScreenState extends State<MessageScreen> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => ChatScreen(
-                    receiverId: data.uid,
-                    receiverName: data.name,
-                    receiverAvt: data.urlAvatar,
+                    receiver: data,
                   ),
                 ));
           },
